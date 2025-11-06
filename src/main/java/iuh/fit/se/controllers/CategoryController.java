@@ -1,0 +1,49 @@
+package iuh.fit.se.controllers;
+
+import iuh.fit.se.dtos.category.CategoryResponseDTO;
+import iuh.fit.se.services.CategoryService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/categories")
+@CrossOrigin(origins = "*") // Allow FE access
+public class CategoryController {
+
+    private final CategoryService categoryService;
+
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
+
+    //Get all parent categories
+    @GetMapping("/parents")
+    public ResponseEntity<Map<String, Object>> getParentCategories() {
+        List<CategoryResponseDTO> parentCategories = categoryService.getParentCategories();
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("success", true);
+        body.put("message", "List of parent categories retrieved successfully");
+        body.put("data", parentCategories);
+
+        return ResponseEntity.ok(body);
+    }
+
+    //Get sub categories by parent ID
+    @GetMapping("/{parentId}/subcategories")
+    public ResponseEntity<Map<String, Object>> getSubCategories(@PathVariable Long parentId) {
+        List<CategoryResponseDTO> subCategories = categoryService.getSubCategories(parentId);
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("success", true);
+        body.put("message", "Subcategories retrieved successfully for parent ID: " + parentId);
+        body.put("data", subCategories);
+
+        return ResponseEntity.ok(body);
+    }
+
+}

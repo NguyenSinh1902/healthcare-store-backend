@@ -1,18 +1,16 @@
 package iuh.fit.se.entities.category;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import iuh.fit.se.entities.product.Product;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "categories")
-@JsonIgnoreProperties({"products"}) // tránh vòng lặp JSON khi trả về
+//@JsonIgnoreProperties({"products"}) // tranh vong lap JSON khi tra ve
 public class Category {
 
     @Id
@@ -34,11 +32,9 @@ public class Category {
     )
     private String imageCategory;
 
-    // 👇 chỉ giữ lại ID cha thay vì tự join
     @Column(name = "parent_category_id")
-    private Long parentCategoryId; // null = cha, khác null = con của ID đó
+    private Long parentCategoryId; // null = cha, khac null = con cua ID đo
 
-    // Quan hệ với Product (giữ nguyên)
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Product> products = new HashSet<>();
 

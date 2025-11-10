@@ -1,5 +1,6 @@
 package iuh.fit.se.services.impl;
 
+import iuh.fit.se.dtos.product.ProductDetailDTO;
 import iuh.fit.se.dtos.product.ProductResponseDTO;
 import iuh.fit.se.entities.product.Product;
 import iuh.fit.se.entities.product.ProductGroup;
@@ -25,6 +26,7 @@ public class ProductServiceImpl implements ProductService {
         this.productMapper = productMapper;
     }
 
+    //Get Products By Group
     @Override
     public List<ProductResponseDTO> getProductsByGroup(String productGroup) {
         ProductGroup groupEnum;
@@ -53,6 +55,37 @@ public class ProductServiceImpl implements ProductService {
         if (products.isEmpty()) {
             throw new NotFoundException("No products found for category ID: " + categoryId);
         }
+        return products.stream()
+                .map(productMapper::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    //Get product detail
+    @Override
+    public ProductDetailDTO getProductDetail(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Product not found with ID: " + id));
+        return productMapper.toDetailDTO(product);
+    }
+
+    //filter product
+    @Override
+    public List<ProductResponseDTO> filterProducts(String brand, Double minPrice, Double maxPrice, Long categoryId, String sort) {
+        List<Product> products = productRepository.filterProducts(brand, minPrice, maxPrice, categoryId);
+
+        if (products.isEmpty()) {
+            throw new NotFoundException("No products found with given filters");
+        }
+
+        // Sort (Low to High / High to Low)
+        if (sort != null) {
+            switch (sort.toLowerCase()) {
+                case "price_low_to_high" -> products.sort((a, b) -> Double.compare(a.getPrice(), b.getPrice()));
+                case "price_high_to_low" -> products.sort((a, b) -> Double.compare(b.getPrice(), a.getPrice()));
+                default -> {} // "featured" or null: no sort
+            }
+        }
+
         return products.stream()
                 .map(productMapper::toResponseDTO)
                 .collect(Collectors.toList());

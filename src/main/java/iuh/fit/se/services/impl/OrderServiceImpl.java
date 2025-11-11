@@ -10,9 +10,7 @@ import iuh.fit.se.entities.order.OrderDetail;
 import iuh.fit.se.entities.order.OrderStatus;
 import iuh.fit.se.mappers.OrderDetailMapper;
 import iuh.fit.se.mappers.OrderMapper;
-import iuh.fit.se.repositories.CartRepository;
-import iuh.fit.se.repositories.OrderDetailRepository;
-import iuh.fit.se.repositories.OrderRepository;
+import iuh.fit.se.repositories.*;
 import iuh.fit.se.services.CartService;
 import iuh.fit.se.services.OrderService;
 import org.springframework.stereotype.Service;
@@ -52,22 +50,22 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponseDTO createOrderFromCart(Long userId, OrderRequestDTO orderRequestDTO) {
-        // 1️⃣ Lấy giỏ hàng người dùng
+        //Get user cart
         Cart cart = cartRepository.findByUser_IdUser(userId)
                 .orElseThrow(() -> new RuntimeException("Cart not found for user id: " + userId));
 
-        // 2️⃣ Lấy danh sách CartItem
+        //Get the CartItem list
         List<CartItem> cartItems = cartItemRepository.findByCart_IdCart(cart.getIdCart());
         if (cartItems.isEmpty()) {
             throw new RuntimeException("Cart is empty!");
         }
 
-        // 3️⃣ Tính tổng tiền (totalAmount)
+        //Calculate total amount (totalAmount)
         double totalAmount = cartItems.stream()
                 .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity())
                 .sum();
 
-        // 4️⃣ Áp dụng mã giảm giá nếu có
+        //Apply coupon code
         double couponDiscount = 0.0;
         Coupon coupon = null;
         if (orderRequestDTO.getIdCoupon() != null) {
@@ -76,10 +74,10 @@ public class OrderServiceImpl implements OrderService {
             couponDiscount = coupon.getDiscountAmount() != null ? coupon.getDiscountAmount() : 0.0;
         }
 
-        // 5️⃣ Tính finalAmount
+        //Calculate finalAmount
         double finalAmount = Math.max(totalAmount - couponDiscount, 0.0);
 
-        // 6️⃣ Tạo đối tượng Order
+        //Create Order object
         Order order = new Order();
         order.setUser(cart.getUser());
         order.setOrderDate(LocalDateTime.now());
@@ -95,17 +93,17 @@ public class OrderServiceImpl implements OrderService {
         order.setCouponDiscount(couponDiscount);
         order.setFinalAmount(finalAmount);
 
-        // 7️⃣ Lưu Order
+        //Save Order
         Order savedOrder = orderRepository.save(order);
 
-        // 8️⃣ Chuyển CartItem → OrderDetail
+        //Move CartItem => OrderDetail
         List<OrderDetail> orderDetails = cartItems.stream()
                 .map(item -> {
                     OrderDetail detail = new OrderDetail();
                     detail.setOrder(savedOrder);
                     detail.setProduct(item.getProduct());
                     detail.setQuantity(item.getQuantity());
-                    detail.setUnitPrice(item.getProduct().getPrice()); // ✅ thêm dòng này
+                    detail.setUnitPrice(item.getProduct().getPrice());
                     detail.setTotalPrice(item.getProduct().getPrice() * item.getQuantity());
                     return detail;
                 })
@@ -114,9 +112,9 @@ public class OrderServiceImpl implements OrderService {
 
         orderDetailRepository.saveAll(orderDetails);
 
-        // 9️⃣ Dọn giỏ hàng sau khi checkout
+        //Clear cart after order
         cartService.clearCart(cart.getIdCart());
-        // 🔟 Trả kết quả
+        //Trả kết quả
         savedOrder.setOrderDetails(new HashSet<>(orderDetails));
         return orderMapper.toResponseDTO(savedOrder);
 
@@ -137,6 +135,5 @@ public class OrderServiceImpl implements OrderService {
                 .map(orderMapper::toResponseDTO)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
     }
-
 
 }

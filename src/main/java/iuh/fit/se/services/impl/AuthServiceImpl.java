@@ -1,22 +1,18 @@
 package iuh.fit.se.services.impl;
 
-import iuh.fit.se.dtos.auth.LoginRequest;
-import iuh.fit.se.dtos.auth.LoginResponse;
-import iuh.fit.se.dtos.auth.RegisterRequest;
-import iuh.fit.se.dtos.auth.RegisterResponse;
+import iuh.fit.se.dtos.auth.*;
 import iuh.fit.se.entities.auth.Role;
 import iuh.fit.se.entities.auth.User;
 import iuh.fit.se.exceptions.BadRequestException;
 import iuh.fit.se.exceptions.ValidationException;
 import iuh.fit.se.repositories.UserRepository;
-import iuh.fit.se.services.AuthService;
 import iuh.fit.se.utils.JwtUtil;
+import iuh.fit.se.services.AuthService;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -73,8 +69,34 @@ public class AuthServiceImpl implements AuthService {
     @Transactional(readOnly = true)
     public LoginResponse login(LoginRequest request) {
 
+        //Find user by email
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new BadRequestException("Invalid email or password"));
 
-        return null;
+        //Check password
+        if (!BCrypt.checkpw(request.getPassword(), user.getPassword())) {
+            throw new BadRequestException("Invalid email or password");
+        }
+
+        //Check account status
+        switch (user.getStatus()) {
+            case INACTIVE -> throw new BadRequestException("Your account is temporarily inactive.");
+            case BANNED -> throw new BadRequestException("Your account has been banned.");
+            default -> {
+            }
+        }
+
+        //Generate JWT token
+        String token = jwtUtil.generateToken(user);
+
+        //Return login result
+        LoginResponse response = new LoginResponse();
+        response.setSuccess(true);
+        response.setToken(token);
+        response.setRole(user.getRole());
+        response.setMessage("Login successful");
+
+        return response;
     }
 
 }

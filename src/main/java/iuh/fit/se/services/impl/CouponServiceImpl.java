@@ -27,7 +27,11 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public CouponResponseDTO createCoupon(CouponRequestDTO dto) {
-        // [LẦN 1: Chưa check trùng mã, cứ thế lưu luôn]
+        //Check for duplicate code
+        if (couponRepository.findByCode(dto.getCode()).isPresent()) {
+            throw new RuntimeException("Coupon code already exists!");
+        }
+
         Coupon coupon = couponMapper.toEntity(dto);
         Coupon saved = couponRepository.save(coupon);
         return couponMapper.toResponseDTO(saved);

@@ -8,7 +8,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -40,12 +42,20 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrderById(id));
     }
 
-    // [PHIÊN BẢN CŨ]: Trả về List trực tiếp, chưa bọc trong Map
+    // Get all orders
     @GetMapping("/all")
-    public ResponseEntity<List<OrderResponseDTO>> getAllOrders() {
-        return ResponseEntity.ok(orderService.getAllOrders());
+    public ResponseEntity<Map<String, Object>> getAllOrders() {
+        List<OrderResponseDTO> orders = orderService.getAllOrders();
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("success", true);
+        body.put("message", "All orders retrieved successfully");
+        body.put("data", orders);
+
+        return ResponseEntity.ok(body);
     }
 
+    //Update Status
     @PutMapping("/{id}/status")
     public ResponseEntity<OrderResponseDTO> updateOrderStatus(
             @PathVariable Long id,
@@ -54,4 +64,5 @@ public class OrderController {
         OrderResponseDTO updatedOrder = orderService.updateOrderStatus(id, status);
         return ResponseEntity.ok(updatedOrder);
     }
+
 }

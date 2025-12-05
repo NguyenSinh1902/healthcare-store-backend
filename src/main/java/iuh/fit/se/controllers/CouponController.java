@@ -7,7 +7,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/coupons")
@@ -47,8 +49,15 @@ public class CouponController {
 
     //GET ALL
     @GetMapping
-    public ResponseEntity<List<CouponResponseDTO>> getAllCoupons() {
-        return ResponseEntity.ok(couponService.getAllCoupons());
+    public ResponseEntity<Map<String, Object>> getAllCoupons() {
+        List<CouponResponseDTO> coupons = couponService.getAllCoupons();
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("success", true);
+        body.put("message", "All coupons retrieved successfully");
+        body.put("data", coupons);
+
+        return ResponseEntity.ok(body);
     }
 
     //GET BY CODE

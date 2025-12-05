@@ -8,6 +8,7 @@ import iuh.fit.se.mappers.CategoryMapper;
 import iuh.fit.se.repositories.CategoryRepository;
 import iuh.fit.se.services.CategoryService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,7 +24,7 @@ public class CategoryServiceImpl implements CategoryService {
         this.categoryMapper = categoryMapper;
     }
 
-    // Get parent
+    //Get parent
     @Override
     public List<CategoryResponseDTO> getParentCategories() {
         List<Category> parents = categoryRepository.findByParentCategoryIdIsNull();
@@ -35,7 +36,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList());
     }
 
-    // Get child category by parent ID
+    //Get child category by parent ID
     @Override
     public List<CategoryResponseDTO> getSubCategories(Long parentId) {
         List<Category> subs = categoryRepository.findByParentCategoryId(parentId);
@@ -47,7 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList());
     }
 
-    // Add
+    //add
     @Override
     public CategoryResponseDTO createCategory(CategoryRequestDTO dto) {
         Category category = categoryMapper.toEntity(dto);
@@ -55,17 +56,27 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryMapper.toResponseDTO(category);
     }
 
-    // Delete (Phiên bản đơn giản - Ngây thơ)
+    //delete
+    @Transactional
     @Override
     public void deleteCategory(Long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("No category found with ID: " + id));
 
-        // Chỉ xóa thẳng, chưa xử lý danh mục con (sẽ fix ở commit sau)
+        //Khi xoa danh muc cha => set các danh muc con ve NULL thay vi xoa luon
+        List<Category> subCategories = categoryRepository.findByParentCategoryId(id);
+        if (!subCategories.isEmpty()) {
+            for (Category sub : subCategories) {
+                sub.setParentCategoryId(null);
+            }
+            categoryRepository.saveAll(subCategories);
+        }
+
         categoryRepository.delete(category);
     }
 
-    // Update category
+    //update category
+    @Transactional
     @Override
     public CategoryResponseDTO updateCategory(Long id, CategoryRequestDTO dto) {
         Category category = categoryRepository.findById(id)
@@ -75,7 +86,7 @@ public class CategoryServiceImpl implements CategoryService {
         if (dto.getNameCategory() != null) category.setNameCategory(dto.getNameCategory());
         if (dto.getDescription() != null) category.setDescription(dto.getDescription());
         if (dto.getImageCategory() != null) category.setImageCategory(dto.getImageCategory());
-        category.setParentCategoryId(dto.getParentCategoryId());
+        category.setParentCategoryId(dto.getParentCategoryId()); // can set null or another parent ID
 
         Category updated = categoryRepository.save(category);
         return categoryMapper.toResponseDTO(updated);

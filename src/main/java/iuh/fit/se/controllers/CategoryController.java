@@ -7,11 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/categories")
-// Chưa có @CrossOrigin (Frontend gọi sẽ bị lỗi CORS)
+@CrossOrigin(origins = "*") // Allow FE access
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -20,37 +22,72 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    // Get all parent categories - Trả về List trực tiếp
+    //Get all parent categories
     @GetMapping("/parents")
-    public ResponseEntity<List<CategoryResponseDTO>> getParentCategories() {
-        return ResponseEntity.ok(categoryService.getParentCategories());
+    public ResponseEntity<Map<String, Object>> getParentCategories() {
+        List<CategoryResponseDTO> parentCategories = categoryService.getParentCategories();
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("success", true);
+        body.put("message", "List of parent categories retrieved successfully");
+        body.put("data", parentCategories);
+
+        return ResponseEntity.ok(body);
     }
 
-    // Get sub categories by parent ID - Trả về List trực tiếp
+    //Get sub categories by parent ID
     @GetMapping("/{parentId}/subcategories")
-    public ResponseEntity<List<CategoryResponseDTO>> getSubCategories(@PathVariable Long parentId) {
-        return ResponseEntity.ok(categoryService.getSubCategories(parentId));
+    public ResponseEntity<Map<String, Object>> getSubCategories(@PathVariable Long parentId) {
+        List<CategoryResponseDTO> subCategories = categoryService.getSubCategories(parentId);
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("success", true);
+        body.put("message", "Subcategories retrieved successfully for parent ID: " + parentId);
+        body.put("data", subCategories);
+
+        return ResponseEntity.ok(body);
     }
 
-    // Create new category
+    //Create new category
     @PostMapping
-    public ResponseEntity<CategoryResponseDTO> createCategory(@RequestBody CategoryRequestDTO categoryRequestDTO) {
-        CategoryResponseDTO newCategory = categoryService.createCategory(categoryRequestDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newCategory);
+    public ResponseEntity<Map<String, Object>> createCategory(@RequestBody CategoryRequestDTO categoryRequestDTO) {
+        CategoryResponseDTO categoryResponseDTO = categoryService.createCategory(categoryRequestDTO);
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("success", true);
+        body.put("message", "Category created successfully");
+        body.put("data", categoryResponseDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
-    // Delete category
+    //Delete category
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
-        return ResponseEntity.noContent().build();
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("success", true);
+        body.put("message", "Category deleted successfully (ID: " + id + ")");
+        body.put("data", null);
+
+        return ResponseEntity.ok(body);
     }
 
-    // Update category by ID
+    //Update category by ID
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryResponseDTO> updateCategory(
+    public ResponseEntity<Map<String, Object>> updateCategory(
             @PathVariable Long id,
             @RequestBody CategoryRequestDTO categoryRequestDTO) {
-        return ResponseEntity.ok(categoryService.updateCategory(id, categoryRequestDTO));
+
+        CategoryResponseDTO updatedCategory = categoryService.updateCategory(id, categoryRequestDTO);
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("success", true);
+        body.put("message", "Category updated successfully (ID: " + id + ")");
+        body.put("data", updatedCategory);
+
+        return ResponseEntity.ok(body);
     }
+
 }

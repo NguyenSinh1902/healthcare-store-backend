@@ -3,6 +3,7 @@ package iuh.fit.se.services.impl;
 import iuh.fit.se.dtos.profile.UserProfileResponse;
 import iuh.fit.se.dtos.profile.UserProfileUpdateRequest;
 import iuh.fit.se.entities.auth.User;
+import iuh.fit.se.entities.auth.UserStatus;
 import iuh.fit.se.mappers.UserProfileMapper;
 import iuh.fit.se.repositories.UserRepository;
 import iuh.fit.se.services.ProfileService;
@@ -56,12 +57,17 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public UserProfileResponse updateUserStatus(Long userId, String status) {
-        // TODO: Implement later
-        return null;
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        user.setStatus(UserStatus.valueOf(status.toUpperCase()));
+        return mapper.toResponseDTO(userRepository.save(user));
     }
 
     @Override
     public void deleteUser(Long userId) {
-        // TODO: Implement later
+        if (!userRepository.existsById(userId)) {
+            throw new EntityNotFoundException("User not found");
+        }
+        userRepository.deleteById(userId);
     }
 }

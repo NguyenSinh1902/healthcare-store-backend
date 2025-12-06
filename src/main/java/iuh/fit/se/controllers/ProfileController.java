@@ -7,7 +7,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/profile")
@@ -20,7 +22,7 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    //User updates profile
+    // User updates profile
     @GetMapping("/{id}")
     public ResponseEntity<UserProfileResponse> getProfile(@PathVariable Long id) {
         return ResponseEntity.ok(profileService.getProfile(id));
@@ -33,10 +35,17 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.updateProfile(id, dto));
     }
 
-    //ADMIN manages users
+    // ADMIN manages users
     @GetMapping("/all")
-    public ResponseEntity<List<UserProfileResponse>> getAllUsers() {
-        return ResponseEntity.ok(profileService.getAllUsers());
+    public ResponseEntity<Map<String, Object>> getAllUsers() {
+        List<UserProfileResponse> users = profileService.getAllUsers();
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("success", true);
+        body.put("message", "All user profiles retrieved successfully");
+        body.put("data", users);
+
+        return ResponseEntity.ok(body);
     }
 
     @PutMapping("/{id}/status")

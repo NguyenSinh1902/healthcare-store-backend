@@ -1,8 +1,6 @@
 package iuh.fit.se.dtos.profile;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-
+import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
 public class UserProfileUpdateRequest {

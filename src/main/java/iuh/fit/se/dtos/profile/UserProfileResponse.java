@@ -2,7 +2,6 @@ package iuh.fit.se.dtos.profile;
 
 import iuh.fit.se.entities.auth.Role;
 import iuh.fit.se.entities.auth.UserStatus;
-
 import java.time.LocalDate;
 
 public class UserProfileResponse {

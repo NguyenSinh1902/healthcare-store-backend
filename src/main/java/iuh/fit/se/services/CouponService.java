@@ -18,4 +18,6 @@ public interface CouponService {
     List<CouponResponseDTO> getAllCoupons();
 
     CouponResponseDTO getCouponByCode(String code);
+
+    CouponResponseDTO updateCouponStatus(Long id, String statusStr);
 }

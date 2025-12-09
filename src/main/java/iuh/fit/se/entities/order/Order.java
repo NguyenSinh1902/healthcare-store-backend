@@ -3,11 +3,7 @@ package iuh.fit.se.entities.order;
 import iuh.fit.se.entities.auth.User;
 import iuh.fit.se.entities.coupon.Coupon;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
-
+import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;

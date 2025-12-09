@@ -17,8 +17,7 @@ public class OrderResponseDTO {
     private String couponCode;
     private List<OrderDetailResponseDTO> orderDetails;
 
-    public OrderResponseDTO() {
-    }
+    public OrderResponseDTO() {}
 
     public OrderResponseDTO(Long idOrder, LocalDateTime orderDate, String deliveryAddress, String paymentMethod, Double totalAmount, Double couponDiscount, Double finalAmount, String status, String couponCode, List<OrderDetailResponseDTO> orderDetails) {
         this.idOrder = idOrder;

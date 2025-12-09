@@ -1,9 +1,11 @@
 package iuh.fit.se.services;
 
-import iuh.fit.se.dtos.product.ProductDetailDTO;
 import iuh.fit.se.dtos.product.ProductRequestDTO;
 import iuh.fit.se.dtos.product.ProductResponseDTO;
+import iuh.fit.se.dtos.product.ProductDetailDTO;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ProductService {
@@ -23,11 +25,13 @@ public interface ProductService {
     //Get All product
     List<ProductResponseDTO> getAllProducts();
 
-    //Create product
-    ProductResponseDTO createProduct(ProductRequestDTO productRequestDTO);
+    // Sửa dòng này trong Interface
+    // Thêm tham số MultipartFile imageFile
+    ProductResponseDTO createProduct(ProductRequestDTO dto, MultipartFile imageFile, List<MultipartFile> thumbnailFiles) throws IOException;
 
     //Update product
-    ProductResponseDTO updateProduct(Long id, ProductRequestDTO productRequestDTO);
+    // Nếu muốn làm update ảnh luôn thì sửa dòng này:
+    ProductResponseDTO updateProduct(Long id, ProductRequestDTO dto, MultipartFile imageFile, List<MultipartFile> thumbnailFiles) throws IOException;
 
     //Delete product
     void deleteProduct(Long id);
@@ -35,5 +39,6 @@ public interface ProductService {
     //filter Products
     List<ProductResponseDTO> filterProducts(String brand, Double minPrice, Double maxPrice, Long categoryId, String sort);
 
-
+    //Search keyword
+    List<ProductResponseDTO> searchProducts(String keyword);
 }

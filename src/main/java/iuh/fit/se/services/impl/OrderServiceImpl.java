@@ -5,6 +5,7 @@ import iuh.fit.se.dtos.order.OrderResponseDTO;
 import iuh.fit.se.entities.cart.Cart;
 import iuh.fit.se.entities.cartitem.CartItem;
 import iuh.fit.se.entities.coupon.Coupon;
+import iuh.fit.se.entities.coupon.CouponStatus;
 import iuh.fit.se.entities.order.Order;
 import iuh.fit.se.entities.order.OrderDetail;
 import iuh.fit.se.entities.order.OrderStatus;
@@ -15,6 +16,7 @@ import iuh.fit.se.services.OrderService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -54,9 +56,26 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new RuntimeException("Cart not found for user id: " + userId));
 
         //Get the CartItem list
-        List<CartItem> cartItems = cartItemRepository.findByCart_IdCart(cart.getIdCart());
+        List<CartItem> cartItems;
+
+        List<Long> selectedIds = orderRequestDTO.getSelectedCartItemIds();
+
+        if (selectedIds != null && !selectedIds.isEmpty()) {
+
+            cartItems = cartItemRepository.findAllById(selectedIds);
+
+            boolean allBelongToUser = cartItems.stream()
+                    .allMatch(item -> item.getCart().getIdCart().equals(cart.getIdCart()));
+
+            if (!allBelongToUser) {
+                throw new RuntimeException("Phát hiện lỗi bảo mật: Sản phẩm được chọn không thuộc giỏ hàng của bạn.");
+            }
+        } else {
+            throw new RuntimeException("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
+        }
+
         if (cartItems.isEmpty()) {
-            throw new RuntimeException("Cart is empty!");
+            throw new RuntimeException("Không tìm thấy sản phẩm nào để thanh toán.");
         }
 
         //Calculate total amount
@@ -64,13 +83,29 @@ public class OrderServiceImpl implements OrderService {
                 .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity())
                 .sum();
 
-        //Apply coupon code if available
+        //Validate & Apply Coupon
         double couponDiscount = 0.0;
         Coupon coupon = null;
+
         if (orderRequestDTO.getIdCoupon() != null) {
             coupon = couponRepository.findById(orderRequestDTO.getIdCoupon())
                     .orElseThrow(() -> new RuntimeException("Coupon not found"));
-            couponDiscount = coupon.getDiscountAmount() != null ? coupon.getDiscountAmount() : 0.0;
+
+            if (coupon.getStatus() != CouponStatus.ACTIVE) {
+                throw new RuntimeException("Coupon is currently inactive.");
+            }
+
+            LocalDate now = LocalDate.now();
+            if ((coupon.getStartDate() != null && now.isBefore(coupon.getStartDate())) ||
+                    (coupon.getEndDate() != null && now.isAfter(coupon.getEndDate()))) {
+                throw new RuntimeException("Coupon is expired or not yet valid.");
+            }
+
+            if (totalAmount < coupon.getMinOrderValue()) {
+                throw new RuntimeException("Order total (" + totalAmount + ") is less than minimum requirement (" + coupon.getMinOrderValue() + ") for this coupon.");
+            }
+
+            couponDiscount = coupon.getDiscountAmount();
         }
 
         //Calculate finalAmount
@@ -82,20 +117,28 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderDate(LocalDateTime.now());
         order.setStatus(OrderStatus.CONFIRMED);
         order.setPaymentMethod(orderRequestDTO.getPaymentMethod());
-        order.setDeliveryAddress(
-                (orderRequestDTO.getDeliveryAddress() != null && !orderRequestDTO.getDeliveryAddress().isBlank())
-                        ? orderRequestDTO.getDeliveryAddress()
-                        : cart.getUser().getAddress()
-        );
+
+        String userProfileAddress = cart.getUser().getAddress();
+        String inputAddress = orderRequestDTO.getDeliveryAddress();
+        String finalAddress;
+
+        if (userProfileAddress != null && !userProfileAddress.trim().isEmpty()) {
+            finalAddress = userProfileAddress;
+        } else if (inputAddress != null && !inputAddress.trim().isEmpty()) {
+            finalAddress = inputAddress;
+        } else {
+            throw new RuntimeException("Delivery address is required.");
+        }
+
+        order.setDeliveryAddress(finalAddress);
         order.setCoupon(coupon);
         order.setTotalAmount(totalAmount);
         order.setCouponDiscount(couponDiscount);
         order.setFinalAmount(finalAmount);
 
-        //save Order
         Order savedOrder = orderRepository.save(order);
 
-        //Navigate to CartItem => OrderDetail
+        //CartItem => OrderDetail
         List<OrderDetail> orderDetails = cartItems.stream()
                 .map(item -> {
                     OrderDetail detail = new OrderDetail();
@@ -108,15 +151,13 @@ public class OrderServiceImpl implements OrderService {
                 })
                 .collect(Collectors.toList());
 
-
         orderDetailRepository.saveAll(orderDetails);
 
-        //Clear cart after checkout
-        cartService.clearCart(cart.getIdCart());
-        //Return result
+        //Clear ONLY selected items
+        cartItemRepository.deleteAll(cartItems);
+
         savedOrder.setOrderDetails(new HashSet<>(orderDetails));
         return orderMapper.toResponseDTO(savedOrder);
-
     }
 
 
@@ -130,24 +171,21 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponseDTO getOrderById(Long id) {
+
         return orderRepository.findById(id)
                 .map(orderMapper::toResponseDTO)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
     }
 
-    //get All Orders
     @Override
     public List<OrderResponseDTO> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
-        if (orders.isEmpty()) {
-            throw new RuntimeException("No orders found");
-        }
+
         return orders.stream()
                 .map(orderMapper::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
-    //Update Status
     @Override
     public OrderResponseDTO updateOrderStatus(Long orderId, OrderStatus newStatus) {
         Order order = orderRepository.findById(orderId)
@@ -158,5 +196,4 @@ public class OrderServiceImpl implements OrderService {
 
         return orderMapper.toResponseDTO(updatedOrder);
     }
-
 }

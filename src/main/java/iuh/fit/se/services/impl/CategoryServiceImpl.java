@@ -7,9 +7,12 @@ import iuh.fit.se.exceptions.NotFoundException;
 import iuh.fit.se.mappers.CategoryMapper;
 import iuh.fit.se.repositories.CategoryRepository;
 import iuh.fit.se.services.CategoryService;
+import iuh.fit.se.services.CloudinaryService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,9 +22,13 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
+    //Khai báo CloudinaryService
+    private final CloudinaryService cloudinaryService;
+
+    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryMapper categoryMapper, CloudinaryService cloudinaryService) {
         this.categoryRepository = categoryRepository;
         this.categoryMapper = categoryMapper;
+        this.cloudinaryService = cloudinaryService;
     }
 
     //Get parent
@@ -48,9 +55,15 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList());
     }
 
-    //add
+    //CREATE
     @Override
-    public CategoryResponseDTO createCategory(CategoryRequestDTO dto) {
+    public CategoryResponseDTO createCategory(CategoryRequestDTO dto, MultipartFile imageFile) throws IOException {
+
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String imageUrl = cloudinaryService.uploadImage(imageFile);
+            dto.setImageCategory(imageUrl);
+        }
+
         Category category = categoryMapper.toEntity(dto);
         categoryRepository.save(category);
         return categoryMapper.toResponseDTO(category);
@@ -75,20 +88,42 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.delete(category);
     }
 
-    //update category
+    //UPDATE CATEGORY
     @Transactional
     @Override
-    public CategoryResponseDTO updateCategory(Long id, CategoryRequestDTO dto) {
+    public CategoryResponseDTO updateCategory(Long id, CategoryRequestDTO dto, MultipartFile imageFile) throws IOException {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Category not found with ID: " + id));
 
-        // Update fields if not null
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String imageUrl = cloudinaryService.uploadImage(imageFile);
+            category.setImageCategory(imageUrl);
+        }
+
+        else if (dto.getImageCategory() != null) {
+            category.setImageCategory(dto.getImageCategory());
+        }
+
         if (dto.getNameCategory() != null) category.setNameCategory(dto.getNameCategory());
         if (dto.getDescription() != null) category.setDescription(dto.getDescription());
-        if (dto.getImageCategory() != null) category.setImageCategory(dto.getImageCategory());
-        category.setParentCategoryId(dto.getParentCategoryId()); // can set null or another parent ID
+
+        category.setParentCategoryId(dto.getParentCategoryId());
 
         Category updated = categoryRepository.save(category);
         return categoryMapper.toResponseDTO(updated);
+    }
+
+    //GET ALL
+    @Override
+    public List<CategoryResponseDTO> getAllCategories() {
+        List<Category> categories = categoryRepository.findAll();
+
+        if (categories.isEmpty()) {
+            throw new NotFoundException("No categories found");
+        }
+
+        return categories.stream()
+                .map(categoryMapper::toResponseDTO)
+                .collect(Collectors.toList());
     }
 }

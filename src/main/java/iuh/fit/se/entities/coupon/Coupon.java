@@ -1,11 +1,7 @@
 package iuh.fit.se.entities.coupon;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
-
+import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
 @Entity
@@ -33,19 +29,23 @@ public class Coupon {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    private boolean active = true;
+    //    private boolean active = true;
+    // 👇 THAY ACTIVE BẰNG CÁI NÀY
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private CouponStatus status = CouponStatus.ACTIVE; // Mặc định là ACTIVE
 
     // Constructors
     public Coupon() {}
 
-    public Coupon(Long idCoupon, String code, Double discountAmount, Double minOrderValue, LocalDate startDate, LocalDate endDate, boolean active) {
+    public Coupon(Long idCoupon, String code, Double discountAmount, Double minOrderValue, LocalDate startDate, LocalDate endDate, CouponStatus status) {
         this.idCoupon = idCoupon;
         this.code = code;
         this.discountAmount = discountAmount;
         this.minOrderValue = minOrderValue;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.active = active;
+        this.status = status;
     }
 
     // Getters and setters
@@ -98,11 +98,11 @@ public class Coupon {
         this.endDate = endDate;
     }
 
-    public boolean isActive() {
-        return active;
+    public CouponStatus getStatus() {
+        return status;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setStatus(CouponStatus status) {
+        this.status = status;
     }
 }

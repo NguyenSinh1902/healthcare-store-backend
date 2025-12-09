@@ -1,5 +1,7 @@
 package iuh.fit.se.dtos.coupon;
 
+import iuh.fit.se.entities.coupon.CouponStatus;
+
 import java.time.LocalDate;
 
 public class CouponResponseDTO {
@@ -9,18 +11,19 @@ public class CouponResponseDTO {
     private Double minOrderValue;
     private LocalDate startDate;
     private LocalDate endDate;
-    private boolean active;
+    // private boolean active;
+    private CouponStatus status;
 
     public CouponResponseDTO() {}
 
-    public CouponResponseDTO(Long idCoupon, String code, Double discountAmount, Double minOrderValue, LocalDate startDate, LocalDate endDate, boolean active) {
+    public CouponResponseDTO(Long idCoupon, String code, Double discountAmount, Double minOrderValue, LocalDate startDate, LocalDate endDate, CouponStatus status) {
         this.idCoupon = idCoupon;
         this.code = code;
         this.discountAmount = discountAmount;
         this.minOrderValue = minOrderValue;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.active = active;
+        this.status = status;
     }
 
     // Getters và Setters
@@ -73,11 +76,11 @@ public class CouponResponseDTO {
         this.endDate = endDate;
     }
 
-    public boolean isActive() {
-        return active;
+    public CouponStatus getStatus() {
+        return status;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setStatus(CouponStatus status) {
+        this.status = status;
     }
 }

@@ -1,7 +1,7 @@
 package iuh.fit.se.dtos.coupon;
 
+import iuh.fit.se.entities.coupon.CouponStatus;
 import jakarta.validation.constraints.*;
-
 import java.time.LocalDate;
 
 public class CouponRequestDTO {
@@ -24,17 +24,20 @@ public class CouponRequestDTO {
     @NotNull(message = "End date is required")
     private LocalDate endDate;
 
-    private boolean active = true; // default true
+    // private boolean active;
+
+    //(Optional, nếu tạo mới không gửi thì mặc định Active)
+    private CouponStatus status;
 
     public CouponRequestDTO() {}
 
-    public CouponRequestDTO(String code, Double discountAmount, Double minOrderValue, LocalDate startDate, LocalDate endDate, boolean active) {
+    public CouponRequestDTO(String code, Double discountAmount, Double minOrderValue, LocalDate startDate, LocalDate endDate, CouponStatus status) {
         this.code = code;
         this.discountAmount = discountAmount;
         this.minOrderValue = minOrderValue;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.active = active;
+        this.status = status;
     }
 
     // Getters và Setters
@@ -79,11 +82,11 @@ public class CouponRequestDTO {
         this.endDate = endDate;
     }
 
-    public boolean isActive() {
-        return active;
+    public CouponStatus getStatus() {
+        return status;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setStatus(CouponStatus status) {
+        this.status = status;
     }
 }

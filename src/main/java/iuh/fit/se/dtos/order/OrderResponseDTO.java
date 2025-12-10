@@ -14,7 +14,7 @@ public class OrderResponseDTO {
     private Double couponDiscount;
     private Double finalAmount;
     private String status;
-    private String couponCode; // nếu có
+    private String couponCode;
     private List<OrderDetailResponseDTO> orderDetails;
 
     public OrderResponseDTO() {}
@@ -40,6 +40,14 @@ public class OrderResponseDTO {
 
     public void setIdOrder(Long idOrder) {
         this.idOrder = idOrder;
+    }
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
     }
 
     public LocalDateTime getOrderDate() {

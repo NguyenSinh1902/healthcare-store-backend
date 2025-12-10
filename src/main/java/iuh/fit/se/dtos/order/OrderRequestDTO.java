@@ -2,20 +2,23 @@ package iuh.fit.se.dtos.order;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import iuh.fit.se.entities.order.PaymentMethod;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
+
+import java.util.List;
 
 public class OrderRequestDTO {
 
     @NotBlank(message = "Delivery address is required")
     private String deliveryAddress;
 
-    @NotNull(message = "Payment method is required") // CASH, CARD, MOMO
+    @NotNull(message = "Payment method is required") // CASH, CARD
     private PaymentMethod paymentMethod;
 
-    private Long idCoupon; // có thể null nếu không dùng mã giảm giá
+    private Long idCoupon;
 
-    // ⚙️ Các field dưới BE sẽ tự tính, không để FE gửi lên
+    private List<Long> selectedCartItemIds;
+
+    // Các field dưới BE sẽ tự tính, không để FE gửi lên
     @JsonIgnore
     private Double totalAmount;
 
@@ -28,26 +31,27 @@ public class OrderRequestDTO {
     // --- Constructors ---
     public OrderRequestDTO() {}
 
-    public OrderRequestDTO(String deliveryAddress, PaymentMethod paymentMethod, Long idCoupon) {
+    public OrderRequestDTO(String deliveryAddress, PaymentMethod paymentMethod, Long idCoupon, List<Long> selectedCartItemIds) {
         this.deliveryAddress = deliveryAddress;
         this.paymentMethod = paymentMethod;
         this.idCoupon = idCoupon;
+        this.selectedCartItemIds = selectedCartItemIds;
     }
 
     // --- Getters & Setters ---
-    public String getDeliveryAddress() {
+    public @NotBlank(message = "Delivery address is required") String getDeliveryAddress() {
         return deliveryAddress;
     }
 
-    public void setDeliveryAddress(String deliveryAddress) {
+    public void setDeliveryAddress(@NotBlank(message = "Delivery address is required") String deliveryAddress) {
         this.deliveryAddress = deliveryAddress;
     }
 
-    public PaymentMethod getPaymentMethod() {
+    public @NotNull(message = "Payment method is required") PaymentMethod getPaymentMethod() {
         return paymentMethod;
     }
 
-    public void setPaymentMethod(PaymentMethod paymentMethod) {
+    public void setPaymentMethod(@NotNull(message = "Payment method is required") PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
 
@@ -57,6 +61,14 @@ public class OrderRequestDTO {
 
     public void setIdCoupon(Long idCoupon) {
         this.idCoupon = idCoupon;
+    }
+
+    public List<Long> getSelectedCartItemIds() {
+        return selectedCartItemIds;
+    }
+
+    public void setSelectedCartItemIds(List<Long> selectedCartItemIds) {
+        this.selectedCartItemIds = selectedCartItemIds;
     }
 
     public Double getTotalAmount() {

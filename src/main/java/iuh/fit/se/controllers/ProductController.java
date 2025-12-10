@@ -1,8 +1,8 @@
 package iuh.fit.se.controllers;
 
+import iuh.fit.se.dtos.product.ProductDetailDTO;
 import iuh.fit.se.dtos.product.ProductRequestDTO;
 import iuh.fit.se.dtos.product.ProductResponseDTO;
-import iuh.fit.se.dtos.product.ProductDetailDTO;
 import iuh.fit.se.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/products")

@@ -1,36 +1,457 @@
-2025-11-06T18:11:27.583+07:00  INFO 29328 --- [healthcare-store-backend] [restartedMain] i.f.s.HealthcareStoreBackendApplication  : Starting HealthcareStoreBackendApplication using Java 17.0.14 with PID 29328 (D:\WWW\BaiTapLon\source\BE\healthcare-store-backend\target\classes started by Admin in D:\WWW\BaiTapLon\source\BE\healthcare-store-backend)
-2025-11-06T18:11:27.585+07:00  INFO 29328 --- [healthcare-store-backend] [restartedMain] i.f.s.HealthcareStoreBackendApplication  : No active profile set, falling back to 1 default profile: "default"
-2025-11-06T18:11:27.615+07:00  INFO 29328 --- [healthcare-store-backend] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2025-11-06T18:11:27.615+07:00  INFO 29328 --- [healthcare-store-backend] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2025-11-06T18:11:28.105+07:00  INFO 29328 --- [healthcare-store-backend] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-11-06T18:11:28.118+07:00  INFO 29328 --- [healthcare-store-backend] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 6 ms. Found 0 JPA repository interfaces.
-2025-11-06T18:11:28.412+07:00  INFO 29328 --- [healthcare-store-backend] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8386 (http)
-2025-11-06T18:11:28.419+07:00  INFO 29328 --- [healthcare-store-backend] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2025-11-06T18:11:28.420+07:00  INFO 29328 --- [healthcare-store-backend] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.48]
-2025-11-06T18:11:28.452+07:00  INFO 29328 --- [healthcare-store-backend] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/api]    : Initializing Spring embedded WebApplicationContext
-2025-11-06T18:11:28.453+07:00  INFO 29328 --- [healthcare-store-backend] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 836 ms
-2025-11-06T18:11:28.752+07:00  INFO 29328 --- [healthcare-store-backend] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-11-06T18:11:28.772+07:00  INFO 29328 --- [healthcare-store-backend] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2025-11-06T18:11:28.840+07:00  INFO 29328 --- [healthcare-store-backend] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.mariadb.jdbc.Connection@19a90c1a
-2025-11-06T18:11:28.841+07:00  INFO 29328 --- [healthcare-store-backend] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2025-11-06T18:11:29.092+07:00  INFO 29328 --- [healthcare-store-backend] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-11-06T18:11:29.174+07:00  WARN 29328 --- [healthcare-store-backend] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-11-06T18:11:29.240+07:00 DEBUG 29328 --- [healthcare-store-backend] [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 6 mappings in 'requestMappingHandlerMapping'
-2025-11-06T18:11:29.289+07:00 DEBUG 29328 --- [healthcare-store-backend] [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
-2025-11-06T18:11:29.309+07:00 DEBUG 29328 --- [healthcare-store-backend] [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
-2025-11-06T18:11:29.339+07:00 DEBUG 29328 --- [healthcare-store-backend] [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
-2025-11-06T18:11:29.459+07:00  WARN 29328 --- [healthcare-store-backend] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+2025-12-10T13:10:44.241+07:00  INFO 12756 --- [healthcare-store-backend] [restartedMain] i.f.s.HealthcareStoreBackendApplication  : Starting HealthcareStoreBackendApplication using Java 17.0.14 with PID 12756 (D:\WWW\BaiTapLon\source\BE\healthcare-store-backend\target\classes started by Admin in D:\WWW\BaiTapLon\source\BE\healthcare-store-backend)
+2025-12-10T13:10:44.243+07:00  INFO 12756 --- [healthcare-store-backend] [restartedMain] i.f.s.HealthcareStoreBackendApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-12-10T13:10:44.279+07:00  INFO 12756 --- [healthcare-store-backend] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-12-10T13:10:44.279+07:00  INFO 12756 --- [healthcare-store-backend] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-12-10T13:10:45.711+07:00  INFO 12756 --- [healthcare-store-backend] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-10T13:10:45.773+07:00  INFO 12756 --- [healthcare-store-backend] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 54 ms. Found 8 JPA repository interfaces.
+2025-12-10T13:10:46.160+07:00  INFO 12756 --- [healthcare-store-backend] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8386 (http)
+2025-12-10T13:10:46.169+07:00  INFO 12756 --- [healthcare-store-backend] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-10T13:10:46.169+07:00  INFO 12756 --- [healthcare-store-backend] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.48]
+2025-12-10T13:10:46.210+07:00  INFO 12756 --- [healthcare-store-backend] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-12-10T13:10:46.210+07:00  INFO 12756 --- [healthcare-store-backend] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1930 ms
+2025-12-10T13:10:46.601+07:00  INFO 12756 --- [healthcare-store-backend] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-10T13:10:46.624+07:00  INFO 12756 --- [healthcare-store-backend] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-10T13:10:47.688+07:00 ERROR 12756 --- [healthcare-store-backend] [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : Socket fail to connect to localhost:3307. Connection refused: getsockopt
+2025-12-10T13:10:47.690+07:00 ERROR 12756 --- [healthcare-store-backend] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+2025-12-10T13:10:47.690+07:00 ERROR 12756 --- [healthcare-store-backend] [restartedMain] o.s.b.web.embedded.tomcat.TomcatStarter  : Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'jwtAuthenticationFilter' defined in file [D:\WWW\BaiTapLon\source\BE\healthcare-store-backend\target\classes\iuh\fit\se\security\JwtAuthenticationFilter.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'userRepository' defined in iuh.fit.se.repositories.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+2025-12-10T13:10:47.718+07:00  INFO 12756 --- [healthcare-store-backend] [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2025-12-10T13:10:47.721+07:00  WARN 12756 --- [healthcare-store-backend] [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2025-12-10T13:10:47.729+07:00  INFO 12756 --- [healthcare-store-backend] [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
 
-Using generated security password: 374c34b5-bce6-4962-963a-93aca1bde54d
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-12-10T13:10:47.746+07:00 ERROR 12756 --- [healthcare-store-backend] [restartedMain] o.s.boot.SpringApplication               : Application run failed
 
-This generated password is for development use only. Your security configuration must be updated before running your application in production.
+org.springframework.context.ApplicationContextException: Unable to start web server
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:170)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at iuh.fit.se.HealthcareStoreBackendApplication.main(HealthcareStoreBackendApplication.java:10)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:147)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:107)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:517)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:219)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:193)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:167)
+	... 13 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'jwtAuthenticationFilter' defined in file [D:\WWW\BaiTapLon\source\BE\healthcare-store-backend\target\classes\iuh\fit\se\security\JwtAuthenticationFilter.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'userRepository' defined in iuh.fit.se.repositories.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:804)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1395)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1232)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:230)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:184)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:179)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:164)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:96)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:271)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:245)
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4452)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1201)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1191)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:81)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:747)
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:770)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1201)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1191)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:81)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:747)
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:201)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:410)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:868)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:436)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:128)
+	... 18 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'userRepository' defined in iuh.fit.se.repositories.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:377)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1725)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1474)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:606)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1708)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1653)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791)
+	... 59 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jpaSharedEM_entityManagerFactory': Cannot resolve reference to bean 'entityManagerFactory' while setting constructor argument
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:377)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:691)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:513)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1375)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1205)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	... 72 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1826)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:607)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	... 84 common frames omitted
+Caused by: org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:276)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215)
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:226)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:194)
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:171)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1442)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1513)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:419)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1873)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1822)
+	... 91 common frames omitted
+Caused by: org.hibernate.HibernateException: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+	at org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl.determineDialect(DialectFactoryImpl.java:191)
+	at org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl.buildDialect(DialectFactoryImpl.java:87)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentWithDefaults(JdbcEnvironmentInitiator.java:186)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:410)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:129)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:81)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263)
+	... 106 common frames omitted
 
-2025-11-06T18:11:29.464+07:00  INFO 29328 --- [healthcare-store-backend] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
-2025-11-06T18:11:29.540+07:00  INFO 29328 --- [healthcare-store-backend] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2025-11-06T18:11:29.569+07:00  INFO 29328 --- [healthcare-store-backend] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8386 (http) with context path '/api'
-2025-11-06T18:11:29.576+07:00  INFO 29328 --- [healthcare-store-backend] [restartedMain] i.f.s.HealthcareStoreBackendApplication  : Started HealthcareStoreBackendApplication in 2.363 seconds (process running for 2.853)
-2025-11-06T18:11:53.597+07:00  INFO 29328 --- [healthcare-store-backend] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
-2025-11-06T18:11:53.701+07:00  INFO 29328 --- [healthcare-store-backend] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
-2025-11-06T18:11:53.704+07:00  INFO 29328 --- [healthcare-store-backend] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2025-11-06T18:11:53.706+07:00  INFO 29328 --- [healthcare-store-backend] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2025-11-06T18:11:53.714+07:00  INFO 29328 --- [healthcare-store-backend] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-12-10T13:12:17.743+07:00  INFO 11372 --- [healthcare-store-backend] [restartedMain] i.f.s.HealthcareStoreBackendApplication  : Starting HealthcareStoreBackendApplication using Java 17.0.14 with PID 11372 (D:\WWW\BaiTapLon\source\BE\healthcare-store-backend\target\classes started by Admin in D:\WWW\BaiTapLon\source\BE\healthcare-store-backend)
+2025-12-10T13:12:17.746+07:00  INFO 11372 --- [healthcare-store-backend] [restartedMain] i.f.s.HealthcareStoreBackendApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-12-10T13:12:17.779+07:00  INFO 11372 --- [healthcare-store-backend] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-12-10T13:12:17.780+07:00  INFO 11372 --- [healthcare-store-backend] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-12-10T13:12:18.502+07:00  INFO 11372 --- [healthcare-store-backend] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-10T13:12:18.570+07:00  INFO 11372 --- [healthcare-store-backend] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 60 ms. Found 8 JPA repository interfaces.
+2025-12-10T13:12:19.001+07:00  INFO 11372 --- [healthcare-store-backend] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8386 (http)
+2025-12-10T13:12:19.010+07:00  INFO 11372 --- [healthcare-store-backend] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-10T13:12:19.010+07:00  INFO 11372 --- [healthcare-store-backend] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.48]
+2025-12-10T13:12:19.049+07:00  INFO 11372 --- [healthcare-store-backend] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-12-10T13:12:19.049+07:00  INFO 11372 --- [healthcare-store-backend] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1269 ms
+2025-12-10T13:12:19.442+07:00  INFO 11372 --- [healthcare-store-backend] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-10T13:12:19.464+07:00  INFO 11372 --- [healthcare-store-backend] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-10T13:12:19.529+07:00  INFO 11372 --- [healthcare-store-backend] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.mariadb.jdbc.Connection@248ec2f0
+2025-12-10T13:12:19.530+07:00  INFO 11372 --- [healthcare-store-backend] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-12-10T13:12:19.753+07:00 ERROR 11372 --- [healthcare-store-backend] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Entity classes [iuh.fit.se.controllers.category.Category] and [iuh.fit.se.entities.category.Category] share the entity name 'Category' (entity names must be distinct)
+2025-12-10T13:12:19.754+07:00 ERROR 11372 --- [healthcare-store-backend] [restartedMain] o.s.b.web.embedded.tomcat.TomcatStarter  : Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'jwtAuthenticationFilter' defined in file [D:\WWW\BaiTapLon\source\BE\healthcare-store-backend\target\classes\iuh\fit\se\security\JwtAuthenticationFilter.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'userRepository' defined in iuh.fit.se.repositories.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+2025-12-10T13:12:19.769+07:00  INFO 11372 --- [healthcare-store-backend] [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2025-12-10T13:12:19.771+07:00  WARN 11372 --- [healthcare-store-backend] [restartedMain] o.a.c.loader.WebappClassLoaderBase       : The web application [ROOT] appears to have started a thread named [HikariPool-1:housekeeper] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.base@17.0.14/jdk.internal.misc.Unsafe.park(Native Method)
+ java.base@17.0.14/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:252)
+ java.base@17.0.14/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:1679)
+ java.base@17.0.14/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:1182)
+ java.base@17.0.14/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:899)
+ java.base@17.0.14/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1062)
+ java.base@17.0.14/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1122)
+ java.base@17.0.14/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+ java.base@17.0.14/java.lang.Thread.run(Thread.java:840)
+2025-12-10T13:12:19.771+07:00  WARN 11372 --- [healthcare-store-backend] [restartedMain] o.a.c.loader.WebappClassLoaderBase       : The web application [ROOT] appears to have started a thread named [HikariPool-1:connection-adder] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.base@17.0.14/java.lang.Thread.sleep(Native Method)
+ app//com.zaxxer.hikari.util.UtilityElf.quietlySleep(UtilityElf.java:71)
+ app//com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator.call(HikariPool.java:757)
+ app//com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator.call(HikariPool.java:731)
+ java.base@17.0.14/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+ java.base@17.0.14/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+ java.base@17.0.14/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+ java.base@17.0.14/java.lang.Thread.run(Thread.java:840)
+2025-12-10T13:12:19.772+07:00  WARN 11372 --- [healthcare-store-backend] [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2025-12-10T13:12:19.774+07:00  INFO 11372 --- [healthcare-store-backend] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-12-10T13:12:19.779+07:00  INFO 11372 --- [healthcare-store-backend] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-12-10T13:12:19.787+07:00  INFO 11372 --- [healthcare-store-backend] [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-12-10T13:12:19.798+07:00 ERROR 11372 --- [healthcare-store-backend] [restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.context.ApplicationContextException: Unable to start web server
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:170)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at iuh.fit.se.HealthcareStoreBackendApplication.main(HealthcareStoreBackendApplication.java:10)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:147)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:107)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:517)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:219)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:193)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:167)
+	... 13 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'jwtAuthenticationFilter' defined in file [D:\WWW\BaiTapLon\source\BE\healthcare-store-backend\target\classes\iuh\fit\se\security\JwtAuthenticationFilter.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'userRepository' defined in iuh.fit.se.repositories.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:804)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1395)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1232)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:230)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:184)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:179)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:164)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:96)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:271)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:245)
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4452)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1201)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1191)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:81)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:747)
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:770)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1201)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1191)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:81)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:747)
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:201)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:410)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:868)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164)
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:436)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:128)
+	... 18 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'userRepository' defined in iuh.fit.se.repositories.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:377)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1725)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1474)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:606)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1708)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1653)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791)
+	... 59 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jpaSharedEM_entityManagerFactory': Cannot resolve reference to bean 'entityManagerFactory' while setting constructor argument
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:377)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:691)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:513)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1375)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1205)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	... 72 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Entity classes [iuh.fit.se.controllers.category.Category] and [iuh.fit.se.entities.category.Category] share the entity name 'Category' (entity names must be distinct)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1826)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:607)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	... 84 common frames omitted
+Caused by: org.hibernate.DuplicateMappingException: Entity classes [iuh.fit.se.controllers.category.Category] and [iuh.fit.se.entities.category.Category] share the entity name 'Category' (entity names must be distinct)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.addEntityBinding(InFlightMetadataCollectorImpl.java:360)
+	at org.hibernate.boot.model.internal.EntityBinder.bindEntityClass(EntityBinder.java:262)
+	at org.hibernate.boot.model.internal.AnnotationBinder.bindClass(AnnotationBinder.java:404)
+	at org.hibernate.boot.model.source.internal.annotations.AnnotationMetadataSourceProcessorImpl.processEntityHierarchies(AnnotationMetadataSourceProcessorImpl.java:266)
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess$1.processEntityHierarchies(MetadataBuildingProcess.java:281)
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:324)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1442)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1513)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:419)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1873)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1822)
+	... 91 common frames omitted
+
+2025-12-10T13:15:29.842+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] i.f.s.HealthcareStoreBackendApplication  : Starting HealthcareStoreBackendApplication using Java 17.0.14 with PID 26556 (D:\WWW\BaiTapLon\source\BE\healthcare-store-backend\target\classes started by Admin in D:\WWW\BaiTapLon\source\BE\healthcare-store-backend)
+2025-12-10T13:15:29.843+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] i.f.s.HealthcareStoreBackendApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-12-10T13:15:29.870+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-12-10T13:15:29.870+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-12-10T13:15:30.823+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-10T13:15:30.883+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 53 ms. Found 8 JPA repository interfaces.
+2025-12-10T13:15:31.210+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8386 (http)
+2025-12-10T13:15:31.217+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-10T13:15:31.218+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.48]
+2025-12-10T13:15:31.255+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-12-10T13:15:31.255+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1384 ms
+2025-12-10T13:15:31.523+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-10T13:15:31.540+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-10T13:15:31.598+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.mariadb.jdbc.Connection@2cb83d97
+2025-12-10T13:15:31.600+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-12-10T13:15:32.455+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-10T13:15:32.774+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-12-10T13:15:33.742+07:00  WARN 26556 --- [healthcare-store-backend] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-10T13:15:33.822+07:00 DEBUG 26556 --- [healthcare-store-backend] [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 52 mappings in 'requestMappingHandlerMapping'
+2025-12-10T13:15:33.870+07:00 DEBUG 26556 --- [healthcare-store-backend] [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-12-10T13:15:33.886+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-12-10T13:15:33.887+07:00  WARN 26556 --- [healthcare-store-backend] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-12-10T13:15:34.013+07:00 DEBUG 26556 --- [healthcare-store-backend] [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-12-10T13:15:34.042+07:00 DEBUG 26556 --- [healthcare-store-backend] [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-12-10T13:15:34.144+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-12-10T13:15:34.174+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8386 (http) with context path '/'
+2025-12-10T13:15:34.182+07:00  INFO 26556 --- [healthcare-store-backend] [restartedMain] i.f.s.HealthcareStoreBackendApplication  : Started HealthcareStoreBackendApplication in 4.658 seconds (process running for 5.041)
+2025-12-10T13:15:45.974+07:00  INFO 26556 --- [healthcare-store-backend] [http-nio-8386-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-10T13:15:45.974+07:00  INFO 26556 --- [healthcare-store-backend] [http-nio-8386-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-12-10T13:15:45.976+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-2] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver
+2025-12-10T13:15:45.976+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-2] o.s.web.servlet.DispatcherServlet        : Detected AcceptHeaderLocaleResolver
+2025-12-10T13:15:45.976+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-2] o.s.web.servlet.DispatcherServlet        : Detected FixedThemeResolver
+2025-12-10T13:15:45.977+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-2] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@536b5b0a
+2025-12-10T13:15:45.977+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-2] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.support.SessionFlashMapManager@5e912aa6
+2025-12-10T13:15:45.977+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-2] o.s.web.servlet.DispatcherServlet        : enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2025-12-10T13:15:45.977+07:00  INFO 26556 --- [healthcare-store-backend] [http-nio-8386-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2025-12-10T13:15:46.029+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/api/products/group/RECOMMENDED", parameters={}
+2025-12-10T13:15:46.029+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/api/products/group/FLASH_SALE", parameters={}
+2025-12-10T13:15:46.029+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/api/products/group/BEST_SELLING", parameters={}
+2025-12-10T13:15:46.031+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to iuh.fit.se.controllers.ProductController#getProductsByGroup(String)
+2025-12-10T13:15:46.031+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to iuh.fit.se.controllers.ProductController#getProductsByGroup(String)
+2025-12-10T13:15:46.031+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to iuh.fit.se.controllers.ProductController#getProductsByGroup(String)
+2025-12-10T13:15:46.169+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/yaml]
+2025-12-10T13:15:46.169+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/yaml]
+2025-12-10T13:15:46.169+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/yaml]
+2025-12-10T13:15:46.171+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{success=true, message=Products retrieved by group successfully, data=[iuh.fit.se.dtos.product.Produ (truncated)...]
+2025-12-10T13:15:46.171+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{success=true, message=Products retrieved by group successfully, data=[iuh.fit.se.dtos.product.Produ (truncated)...]
+2025-12-10T13:15:46.171+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{success=true, message=Products retrieved by group successfully, data=[iuh.fit.se.dtos.product.Produ (truncated)...]
+2025-12-10T13:15:46.211+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-12-10T13:15:46.211+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-12-10T13:15:46.211+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-12-10T13:15:57.518+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/api/products/group/RECOMMENDED", parameters={}
+2025-12-10T13:15:57.519+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to iuh.fit.se.controllers.ProductController#getProductsByGroup(String)
+2025-12-10T13:15:57.531+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/yaml]
+2025-12-10T13:15:57.531+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{success=true, message=Products retrieved by group successfully, data=[iuh.fit.se.dtos.product.Produ (truncated)...]
+2025-12-10T13:15:57.532+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-12-10T13:15:59.028+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/api/products/group/RECOMMENDED", parameters={}
+2025-12-10T13:15:59.029+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to iuh.fit.se.controllers.ProductController#getProductsByGroup(String)
+2025-12-10T13:15:59.039+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/yaml]
+2025-12-10T13:15:59.040+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{success=true, message=Products retrieved by group successfully, data=[iuh.fit.se.dtos.product.Produ (truncated)...]
+2025-12-10T13:15:59.041+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-12-10T13:16:00.486+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/api/products/group/FLASH_SALE", parameters={}
+2025-12-10T13:16:00.486+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/api/products/group/RECOMMENDED", parameters={}
+2025-12-10T13:16:00.486+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/api/products/group/BEST_SELLING", parameters={}
+2025-12-10T13:16:00.486+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to iuh.fit.se.controllers.ProductController#getProductsByGroup(String)
+2025-12-10T13:16:00.486+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to iuh.fit.se.controllers.ProductController#getProductsByGroup(String)
+2025-12-10T13:16:00.486+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to iuh.fit.se.controllers.ProductController#getProductsByGroup(String)
+2025-12-10T13:16:00.499+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/yaml]
+2025-12-10T13:16:00.499+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{success=true, message=Products retrieved by group successfully, data=[iuh.fit.se.dtos.product.Produ (truncated)...]
+2025-12-10T13:16:00.500+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-12-10T13:16:00.509+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/yaml]
+2025-12-10T13:16:00.509+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{success=true, message=Products retrieved by group successfully, data=[iuh.fit.se.dtos.product.Produ (truncated)...]
+2025-12-10T13:16:00.511+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/yaml]
+2025-12-10T13:16:00.512+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{success=true, message=Products retrieved by group successfully, data=[iuh.fit.se.dtos.product.Produ (truncated)...]
+2025-12-10T13:16:00.512+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-12-10T13:16:00.513+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-12-10T13:16:07.547+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/api/products/group/FLASH_SALE", parameters={}
+2025-12-10T13:16:07.548+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/api/products/group/BEST_SELLING", parameters={}
+2025-12-10T13:16:07.548+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to iuh.fit.se.controllers.ProductController#getProductsByGroup(String)
+2025-12-10T13:16:07.548+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to iuh.fit.se.controllers.ProductController#getProductsByGroup(String)
+2025-12-10T13:16:07.548+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/api/products/group/RECOMMENDED", parameters={}
+2025-12-10T13:16:07.548+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to iuh.fit.se.controllers.ProductController#getProductsByGroup(String)
+2025-12-10T13:16:07.561+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/yaml]
+2025-12-10T13:16:07.562+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{success=true, message=Products retrieved by group successfully, data=[iuh.fit.se.dtos.product.Produ (truncated)...]
+2025-12-10T13:16:07.563+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-12-10T13:16:07.574+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/yaml]
+2025-12-10T13:16:07.574+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{success=true, message=Products retrieved by group successfully, data=[iuh.fit.se.dtos.product.Produ (truncated)...]
+2025-12-10T13:16:07.575+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-12-10T13:16:07.577+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/yaml]
+2025-12-10T13:16:07.577+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{success=true, message=Products retrieved by group successfully, data=[iuh.fit.se.dtos.product.Produ (truncated)...]
+2025-12-10T13:16:07.579+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-12-10T13:16:20.754+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/api/products/all", parameters={}
+2025-12-10T13:16:20.754+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to iuh.fit.se.controllers.ProductController#getAllProducts()
+2025-12-10T13:16:20.800+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/yaml]
+2025-12-10T13:16:20.800+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{success=true, message=All products retrieved successfully, data=[iuh.fit.se.dtos.product.ProductRes (truncated)...]
+2025-12-10T13:16:20.803+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-12-10T13:16:23.053+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/api/categories", parameters={}
+2025-12-10T13:16:23.053+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to iuh.fit.se.controllers.CategoryController#getAllCategories()
+2025-12-10T13:16:23.076+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/yaml]
+2025-12-10T13:16:23.076+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{success=true, message=All categories retrieved successfully, data=[iuh.fit.se.dtos.category.Categor (truncated)...]
+2025-12-10T13:16:23.080+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-12-10T13:16:24.848+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/api/products/all", parameters={}
+2025-12-10T13:16:24.850+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to iuh.fit.se.controllers.ProductController#getAllProducts()
+2025-12-10T13:16:24.895+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/yaml]
+2025-12-10T13:16:24.895+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{success=true, message=All products retrieved successfully, data=[iuh.fit.se.dtos.product.ProductRes (truncated)...]
+2025-12-10T13:16:24.898+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-12-10T13:16:26.026+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/api/categories", parameters={}
+2025-12-10T13:16:26.026+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to iuh.fit.se.controllers.CategoryController#getAllCategories()
+2025-12-10T13:16:26.033+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/yaml]
+2025-12-10T13:16:26.034+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{success=true, message=All categories retrieved successfully, data=[iuh.fit.se.dtos.category.Categor (truncated)...]
+2025-12-10T13:16:26.038+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-12-10T13:16:31.704+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/api/coupons", parameters={}
+2025-12-10T13:16:31.704+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to iuh.fit.se.controllers.CouponController#getAllCoupons()
+2025-12-10T13:16:31.724+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/yaml]
+2025-12-10T13:16:31.724+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[iuh.fit.se.dtos.coupon.CouponResponseDTO@3070c545, iuh.fit.se.dtos.coupon.CouponResponseDTO@7d7432d (truncated)...]
+2025-12-10T13:16:31.730+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-12-10T13:16:34.074+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/api/coupons", parameters={}
+2025-12-10T13:16:34.074+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to iuh.fit.se.controllers.CouponController#getAllCoupons()
+2025-12-10T13:16:34.082+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json, application/yaml]
+2025-12-10T13:16:34.083+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[iuh.fit.se.dtos.coupon.CouponResponseDTO@6130e796, iuh.fit.se.dtos.coupon.CouponResponseDTO@5cc345f (truncated)...]
+2025-12-10T13:16:34.085+07:00 DEBUG 26556 --- [healthcare-store-backend] [http-nio-8386-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-12-10T13:17:05.582+07:00  INFO 26556 --- [healthcare-store-backend] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-12-10T13:17:05.660+07:00  INFO 26556 --- [healthcare-store-backend] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-12-10T13:17:05.665+07:00  INFO 26556 --- [healthcare-store-backend] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-10T13:17:05.667+07:00  INFO 26556 --- [healthcare-store-backend] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-12-10T13:17:05.674+07:00  INFO 26556 --- [healthcare-store-backend] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

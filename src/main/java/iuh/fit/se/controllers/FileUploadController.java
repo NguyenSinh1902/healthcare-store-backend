@@ -1,6 +1,6 @@
 package iuh.fit.se.controllers;
 
-import iuh.fit.se.services.CloudinaryService; // Import cái Interface
+import iuh.fit.se.services.CloudinaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

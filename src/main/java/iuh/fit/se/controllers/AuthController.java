@@ -2,7 +2,7 @@ package iuh.fit.se.controllers;
 
 import iuh.fit.se.dtos.auth.*;
 import iuh.fit.se.services.AuthService;
-import iuh.fit.se.services.impl.AuthServiceImpl; // Cast nếu cần hoặc dùng Interface nếu đã thêm method
+import iuh.fit.se.services.impl.AuthServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

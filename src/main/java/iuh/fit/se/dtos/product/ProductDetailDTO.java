@@ -1,5 +1,7 @@
 package iuh.fit.se.dtos.product;
 
+import java.util.List;
+
 public class ProductDetailDTO {
     private Long idProduct;
     private String nameProduct;
@@ -14,11 +16,13 @@ public class ProductDetailDTO {
     private String productGroup;
     private Long idCategory;
     private String categoryName;
+    // DANH SÁCH ẢNH THUMBNAIL
+    private List<String> thumbnails;
 
     public ProductDetailDTO() {
     }
 
-    public ProductDetailDTO(Long idProduct, String nameProduct, String brand, Double price, Double oldPrice, Integer discountPercent, Integer stockQuantity, String imageProduct, String description, String information, String productGroup, Long idCategory, String categoryName) {
+    public ProductDetailDTO(Long idProduct, String nameProduct, String brand, Double price, Double oldPrice, Integer discountPercent, Integer stockQuantity, String imageProduct, String description, String information, String productGroup, Long idCategory, String categoryName, List<String> thumbnails) {
         this.idProduct = idProduct;
         this.nameProduct = nameProduct;
         this.brand = brand;
@@ -32,10 +36,8 @@ public class ProductDetailDTO {
         this.productGroup = productGroup;
         this.idCategory = idCategory;
         this.categoryName = categoryName;
+        this.thumbnails = thumbnails;
     }
-
-    // Getters and Setters
-
 
     public Long getIdProduct() {
         return idProduct;
@@ -139,5 +141,13 @@ public class ProductDetailDTO {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public List<String> getThumbnails() {
+        return thumbnails;
+    }
+
+    public void setThumbnails(List<String> thumbnails) {
+        this.thumbnails = thumbnails;
     }
 }

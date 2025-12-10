@@ -4,6 +4,8 @@ import iuh.fit.se.entities.category.Category;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "products")
 public class Product {
@@ -41,11 +43,18 @@ public class Product {
 
     @NotBlank(message = "Product image URL is required")
     @Pattern(
-            regexp = "^(https?:\\/\\/.*\\.(?:png|jpg|jpeg))$",
+            regexp = ".*\\.(png|jpg|jpeg)$",
             message = "Image URL must be valid (.jpg, .png, .jpeg)"
     )
     @Column(nullable = false)
     private String imageProduct;
+
+    // ⭐ DANH SÁCH NHIỀU THUMBNAIL
+    @ElementCollection
+    @CollectionTable(name="product_thumbnails", joinColumns=@JoinColumn(name="product_id"))
+    @Column(name="thumbnail_url")
+    private List<String> thumbnails;
+
 
     @NotBlank(message = "Product description is required")
     @Size(min = 10, message = "Description must be at least 10 characters long")
@@ -64,12 +73,15 @@ public class Product {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ProductGroup productGroup = ProductGroup.NORMAL; // default value
+    private ProductGroup productGroup = ProductGroup.NORMAL;
 
-    public Product() {
-    }
+    // 👇 THÊM FIELD NÀY VÀO
+    @Column(name = "is_active")
+    private boolean active = true; // Mặc định là true (Đang hoạt động/Đang bán)
 
-    public Product(Long idProduct, String nameProduct, String brand, Double price, Double oldPrice, Integer discountPercent, Integer stockQuantity, String imageProduct, String description, String information, Category category, ProductGroup productGroup) {
+    public Product() {}
+
+    public Product(Long idProduct, String nameProduct, String brand, Double price, Double oldPrice, Integer discountPercent, Integer stockQuantity, String imageProduct, List<String> thumbnails, String description, String information, Category category, ProductGroup productGroup, boolean active) {
         this.idProduct = idProduct;
         this.nameProduct = nameProduct;
         this.brand = brand;
@@ -78,10 +90,12 @@ public class Product {
         this.discountPercent = discountPercent;
         this.stockQuantity = stockQuantity;
         this.imageProduct = imageProduct;
+        this.thumbnails = thumbnails;
         this.description = description;
         this.information = information;
         this.category = category;
         this.productGroup = productGroup;
+        this.active = active;
     }
 
     public Long getIdProduct() {
@@ -141,17 +155,25 @@ public class Product {
     }
 
     public @NotBlank(message = "Product image URL is required") @Pattern(
-            regexp = "^(https?:\\/\\/.*\\.(?:png|jpg|jpeg))$",
+            regexp = ".*\\.(png|jpg|jpeg)$",
             message = "Image URL must be valid (.jpg, .png, .jpeg)"
     ) String getImageProduct() {
         return imageProduct;
     }
 
     public void setImageProduct(@NotBlank(message = "Product image URL is required") @Pattern(
-            regexp = "^(https?:\\/\\/.*\\.(?:png|jpg|jpeg))$",
+            regexp = ".*\\.(png|jpg|jpeg)$",
             message = "Image URL must be valid (.jpg, .png, .jpeg)"
     ) String imageProduct) {
         this.imageProduct = imageProduct;
+    }
+
+    public List<String> getThumbnails() {
+        return thumbnails;
+    }
+
+    public void setThumbnails(List<String> thumbnails) {
+        this.thumbnails = thumbnails;
     }
 
     public @NotBlank(message = "Product description is required") @Size(min = 10, message = "Description must be at least 10 characters long") String getDescription() {
@@ -184,5 +206,13 @@ public class Product {
 
     public void setProductGroup(ProductGroup productGroup) {
         this.productGroup = productGroup;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

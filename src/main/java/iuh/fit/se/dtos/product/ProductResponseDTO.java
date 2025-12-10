@@ -1,32 +1,48 @@
 package iuh.fit.se.dtos.product;
 
+import java.util.List;
+
 public class ProductResponseDTO {
     private Long idProduct;
     private String nameProduct;
+    private String brand;
     private String imageProduct;
     private Double price;
     private Double oldPrice;
     private Integer discountPercent;
+    private Integer stockQuantity;
+    private String description;
+    private String information;
     private Long idCategory;
     private String categoryName;
     private String productGroup;
+    private List<String> thumbnails;
+
+    private boolean active;
 
     public ProductResponseDTO() {
     }
 
-    public ProductResponseDTO(Long idProduct, String nameProduct, String imageProduct, Double price, Double oldPrice, Integer discountPercent, Long idCategory, String categoryName, String productGroup) {
+    public ProductResponseDTO(Long idProduct, String nameProduct, String brand, String imageProduct, Double price, Double oldPrice, Integer discountPercent, Integer stockQuantity, String description, String information, Long idCategory, String categoryName, String productGroup, List<String> thumbnails, boolean active) {
         this.idProduct = idProduct;
         this.nameProduct = nameProduct;
+        this.brand = brand;
         this.imageProduct = imageProduct;
         this.price = price;
         this.oldPrice = oldPrice;
         this.discountPercent = discountPercent;
+        this.stockQuantity = stockQuantity;
+        this.description = description;
+        this.information = information;
         this.idCategory = idCategory;
         this.categoryName = categoryName;
         this.productGroup = productGroup;
+        this.thumbnails = thumbnails;
+        this.active = active;
     }
 
     // Getters and Setters
+
 
     public Long getIdProduct() {
         return idProduct;
@@ -42,6 +58,14 @@ public class ProductResponseDTO {
 
     public void setNameProduct(String nameProduct) {
         this.nameProduct = nameProduct;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
     public String getImageProduct() {
@@ -76,6 +100,30 @@ public class ProductResponseDTO {
         this.discountPercent = discountPercent;
     }
 
+    public Integer getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(Integer stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getInformation() {
+        return information;
+    }
+
+    public void setInformation(String information) {
+        this.information = information;
+    }
+
     public Long getIdCategory() {
         return idCategory;
     }
@@ -98,5 +146,21 @@ public class ProductResponseDTO {
 
     public void setProductGroup(String productGroup) {
         this.productGroup = productGroup;
+    }
+
+    public List<String> getThumbnails() {
+        return thumbnails;
+    }
+
+    public void setThumbnails(List<String> thumbnails) {
+        this.thumbnails = thumbnails;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

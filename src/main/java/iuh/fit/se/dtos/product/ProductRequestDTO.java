@@ -1,8 +1,10 @@
 package iuh.fit.se.dtos.product;
 
 import jakarta.validation.constraints.*;
+import java.util.List;
 
 public class ProductRequestDTO {
+
     @NotBlank(message = "Product name is required")
     @Size(min = 3, max = 150, message = "Product name must be between 3 and 150 characters")
     private String nameProduct;
@@ -11,8 +13,7 @@ public class ProductRequestDTO {
     @Size(min = 2, max = 100, message = "Brand name must be between 2 and 100 characters")
     private String brand;
 
-    @NotNull(message = "Price is required")
-    @Positive(message = "Price must be greater than 0")
+
     private Double price;
 
     @PositiveOrZero(message = "Old price must be greater or equal to 0")
@@ -26,9 +27,15 @@ public class ProductRequestDTO {
     @PositiveOrZero(message = "Stock quantity cannot be negative")
     private Integer stockQuantity;
 
-    @NotBlank(message = "Product image URL is required")
-    @Pattern(regexp = "^(https?:\\/\\/.*\\.(?:png|jpg|jpeg))$", message = "Image URL must be valid (.jpg, .png, .jpeg)")
+    //@NotBlank(message = "Product image URL is required")
+    @Pattern(
+            regexp = ".*\\.(png|jpg|jpeg)$",
+            message = "Image URL must be valid (.jpg, .png, .jpeg)"
+    )
     private String imageProduct;
+
+    //DANH SÁCH NHIỀU ẢNH THUMBNAIL
+    private List<String> thumbnails;
 
     @NotBlank(message = "Product description is required")
     @Size(min = 10, message = "Description must be at least 10 characters long")
@@ -44,7 +51,7 @@ public class ProductRequestDTO {
     public ProductRequestDTO() {
     }
 
-    public ProductRequestDTO(String nameProduct, String brand, Double price, Double oldPrice, Integer discountPercent, Integer stockQuantity, String imageProduct, String description, String information, Long idCategory, String productGroup) {
+    public ProductRequestDTO(String nameProduct, String brand, Double price, Double oldPrice, Integer discountPercent, Integer stockQuantity, String imageProduct, List<String> thumbnails, String description, String information, Long idCategory, String productGroup) {
         this.nameProduct = nameProduct;
         this.brand = brand;
         this.price = price;
@@ -52,6 +59,7 @@ public class ProductRequestDTO {
         this.discountPercent = discountPercent;
         this.stockQuantity = stockQuantity;
         this.imageProduct = imageProduct;
+        this.thumbnails = thumbnails;
         this.description = description;
         this.information = information;
         this.idCategory = idCategory;
@@ -74,11 +82,11 @@ public class ProductRequestDTO {
         this.brand = brand;
     }
 
-    public @NotNull(message = "Price is required") @Positive(message = "Price must be greater than 0") Double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(@NotNull(message = "Price is required") @Positive(message = "Price must be greater than 0") Double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -106,12 +114,26 @@ public class ProductRequestDTO {
         this.stockQuantity = stockQuantity;
     }
 
-    public @NotBlank(message = "Product image URL is required") @Pattern(regexp = "^(https?:\\/\\/.*\\.(?:png|jpg|jpeg))$", message = "Image URL must be valid (.jpg, .png, .jpeg)") String getImageProduct() {
+    public @Pattern(
+            regexp = ".*\\.(png|jpg|jpeg)$",
+            message = "Image URL must be valid (.jpg, .png, .jpeg)"
+    ) String getImageProduct() {
         return imageProduct;
     }
 
-    public void setImageProduct(@NotBlank(message = "Product image URL is required") @Pattern(regexp = "^(https?:\\/\\/.*\\.(?:png|jpg|jpeg))$", message = "Image URL must be valid (.jpg, .png, .jpeg)") String imageProduct) {
+    public void setImageProduct(@Pattern(
+            regexp = ".*\\.(png|jpg|jpeg)$",
+            message = "Image URL must be valid (.jpg, .png, .jpeg)"
+    ) String imageProduct) {
         this.imageProduct = imageProduct;
+    }
+
+    public List<String> getThumbnails() {
+        return thumbnails;
+    }
+
+    public void setThumbnails(List<String> thumbnails) {
+        this.thumbnails = thumbnails;
     }
 
     public @NotBlank(message = "Product description is required") @Size(min = 10, message = "Description must be at least 10 characters long") String getDescription() {

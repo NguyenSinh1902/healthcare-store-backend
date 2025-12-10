@@ -14,8 +14,9 @@ import iuh.fit.se.repositories.CartRepository;
 import iuh.fit.se.repositories.ProductRepository;
 import iuh.fit.se.repositories.UserRepository;
 import iuh.fit.se.services.CartService;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -117,16 +118,21 @@ public class CartServiceImpl implements CartService {
     }
 
     //Clear Cart
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public void clearCart(Long cartId) {
+        // Kiểm tra cart có tồn tại
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new NotFoundException("Cart not found with ID: " + cartId));
 
-        cartItemRepository.deleteAll(cart.getCartItems());
+        // 🔹 Xóa tất cả cart items theo cartId, không dùng entity list
+        cartItemRepository.deleteAllByCart_IdCart(cartId);
+
+        // 🔹 Reset total
         cart.setTotalAmount(0.0);
         cartRepository.save(cart);
     }
+
 
     //Update cart total
     private void updateCartTotal(Cart cart) {

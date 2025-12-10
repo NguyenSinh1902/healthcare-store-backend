@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByEmail(String email); // dùng email thay cho username
+    Optional<User> findByEmail(String email);
 
     //Tìm tất cả user ngoại trừ trạng thái được truyền vào
     List<User> findByStatusNot(UserStatus status);

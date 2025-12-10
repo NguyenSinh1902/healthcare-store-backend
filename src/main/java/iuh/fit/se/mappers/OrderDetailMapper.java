@@ -11,7 +11,7 @@ public interface OrderDetailMapper {
 
     //RequestDTO - Entity
     @Mapping(target = "idOrderDetail", ignore = true)
-    @Mapping(target = "order", ignore = true) // gán thủ công trong Service
+    @Mapping(target = "order", ignore = true)
     @Mapping(target = "product.idProduct", source = "idProduct")
     OrderDetail toEntity(OrderDetailRequestDTO dto);
 

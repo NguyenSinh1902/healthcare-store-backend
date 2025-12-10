@@ -2,7 +2,8 @@ package iuh.fit.se.dtos.order;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import iuh.fit.se.entities.order.PaymentMethod;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 

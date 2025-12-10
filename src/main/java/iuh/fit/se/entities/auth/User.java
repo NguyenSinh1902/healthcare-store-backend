@@ -68,7 +68,7 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(Long idUser, String fullName, String email, String password, String phone, String address, Role role, Date createdAt, UserStatus status, LocalDate dateOfBirth, String avatarUrl) {
+    public User(Long idUser, String fullName, String email, String password, String phone, String address, Role role, Date createdAt) {
         this.idUser = idUser;
         this.fullName = fullName;
         this.email = email;
@@ -140,6 +140,8 @@ public class User implements UserDetails {
     public String getPassword() {
         return password;
     }
+
+
 
     public void setPassword(String password) {
         this.password = password;

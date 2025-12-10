@@ -3,6 +3,7 @@ package iuh.fit.se.services.impl;
 import iuh.fit.se.dtos.cart.CartResponseDTO;
 import iuh.fit.se.dtos.cartitem.CartItemRequestDTO;
 import iuh.fit.se.dtos.cartitem.CartItemResponseDTO;
+import iuh.fit.se.entities.auth.User;
 import iuh.fit.se.entities.cart.Cart;
 import iuh.fit.se.entities.cartitem.CartItem;
 import iuh.fit.se.entities.product.Product;
@@ -15,7 +16,6 @@ import iuh.fit.se.repositories.ProductRepository;
 import iuh.fit.se.repositories.UserRepository;
 import iuh.fit.se.services.CartService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -30,12 +30,9 @@ public class CartServiceImpl implements CartService {
     private final CartMapper cartMapper;
     private final CartItemMapper cartItemMapper;
 
-    public CartServiceImpl(CartRepository cartRepository,
-                           CartItemRepository cartItemRepository,
-                           ProductRepository productRepository,
-                           UserRepository userRepository,
-                           CartMapper cartMapper,
-                           CartItemMapper cartItemMapper) {
+    public CartServiceImpl(CartRepository cartRepository, CartItemRepository cartItemRepository,
+                           ProductRepository productRepository, UserRepository userRepository,
+                           CartMapper cartMapper, CartItemMapper cartItemMapper) {
         this.cartRepository = cartRepository;
         this.cartItemRepository = cartItemRepository;
         this.productRepository = productRepository;
@@ -44,101 +41,111 @@ public class CartServiceImpl implements CartService {
         this.cartItemMapper = cartItemMapper;
     }
 
-    //Get cart by user ID
+    //Tự động lấy hoặc tạo giỏ hàng
+    private Cart getOrCreateCartByUserId(Long userId) {
+        return cartRepository.findByUser_IdUser(userId)
+                .orElseGet(() -> {
+                    User user = userRepository.findById(userId)
+                            .orElseThrow(() -> new NotFoundException("User not found ID: " + userId));
+                    Cart newCart = new Cart();
+                    newCart.setUser(user);
+                    newCart.setTotalAmount(0.0);
+                    return cartRepository.save(newCart);
+                });
+    }
+
+    //Tính lại tổng tiền
+    private void updateCartTotal(Cart cart) {
+        List<CartItem> items = cartItemRepository.findByCart_IdCart(cart.getIdCart());
+        double total = items.stream().mapToDouble(CartItem::getTotalPrice).sum();
+        cart.setTotalAmount(total);
+        cartRepository.save(cart);
+    }
+
     @Override
     public CartResponseDTO getCartByUser(Long userId) {
-        Cart cart = cartRepository.findByUser_IdUser(userId)
-                .orElseThrow(() -> new NotFoundException("Cart not found for user ID: " + userId));
+        Cart cart = getOrCreateCartByUserId(userId);
         return cartMapper.toResponseDTO(cart);
     }
 
-    //Add product to cart
-    @Transactional
     @Override
-    public CartItemResponseDTO addItemToCart(CartItemRequestDTO requestDTO) {
-        Cart cart = cartRepository.findById(requestDTO.getIdCart())
-                .orElseThrow(() -> new NotFoundException("Cart not found with ID: " + requestDTO.getIdCart()));
+    @Transactional
+    public CartItemResponseDTO addItemToCart(Long userId, CartItemRequestDTO requestDTO) {
+        Cart cart = getOrCreateCartByUserId(userId);
 
         Product product = productRepository.findById(requestDTO.getIdProduct())
                 .orElseThrow(() -> new NotFoundException("Product not found with ID: " + requestDTO.getIdProduct()));
 
-        //Check if the product is in the cart
         CartItem existingItem = cartItemRepository.findByCart_IdCartAndProduct_IdProduct(cart.getIdCart(), product.getIdProduct())
                 .orElse(null);
 
         CartItem cartItem;
         if (existingItem != null) {
-            //If already present, add quantity
             existingItem.setQuantity(existingItem.getQuantity() + requestDTO.getQuantity());
             existingItem.setTotalPrice(existingItem.getQuantity() * product.getPrice());
             cartItem = cartItemRepository.save(existingItem);
         } else {
-            //If not, add new
-            cartItem = cartItemMapper.toEntity(requestDTO);
+            cartItem = new CartItem();
             cartItem.setCart(cart);
             cartItem.setProduct(product);
+            cartItem.setQuantity(requestDTO.getQuantity());
             cartItem.setTotalPrice(product.getPrice() * requestDTO.getQuantity());
             cartItemRepository.save(cartItem);
         }
 
         updateCartTotal(cart);
-
         return cartItemMapper.toResponseDTO(cartItem);
     }
 
-    //Update quantity
-    @Transactional
     @Override
-    public CartItemResponseDTO updateItemQuantity(Long cartItemId, Integer newQuantity) {
+    @Transactional
+    public CartItemResponseDTO updateItemQuantity(Long userId, Long cartItemId, Integer newQuantity) {
         CartItem item = cartItemRepository.findById(cartItemId)
-                .orElseThrow(() -> new NotFoundException("Cart item not found with ID: " + cartItemId));
+                .orElseThrow(() -> new NotFoundException("Cart item not found"));
+
+        if (!item.getCart().getUser().getIdUser().equals(userId)) {
+            throw new RuntimeException("Unauthorized: You do not own this cart item");
+        }
 
         if (newQuantity <= 0) {
+            Cart cart = item.getCart();
             cartItemRepository.delete(item);
+            updateCartTotal(cart);
+            return null;
         } else {
             item.setQuantity(newQuantity);
             item.setTotalPrice(item.getProduct().getPrice() * newQuantity);
-            cartItemRepository.save(item);
+            CartItem savedItem = cartItemRepository.save(item);
+            updateCartTotal(item.getCart());
+            return cartItemMapper.toResponseDTO(savedItem);
         }
-
-        updateCartTotal(item.getCart());
-        return cartItemMapper.toResponseDTO(item);
     }
 
-    //Delete product
-    @Transactional
     @Override
-    public void removeItemFromCart(Long cartItemId) {
+    @Transactional
+    public void removeItemFromCart(Long userId, Long cartItemId) {
         CartItem item = cartItemRepository.findById(cartItemId)
-                .orElseThrow(() -> new NotFoundException("Cart item not found with ID: " + cartItemId));
+                .orElseThrow(() -> new NotFoundException("Cart item not found"));
+
+        if (!item.getCart().getUser().getIdUser().equals(userId)) {
+            throw new RuntimeException("Unauthorized: You do not own this cart item");
+        }
 
         Cart cart = item.getCart();
         cartItemRepository.delete(item);
         updateCartTotal(cart);
     }
 
-    //Clear Cart
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public void clearCart(Long cartId) {
-        // Kiểm tra cart có tồn tại
-        Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new NotFoundException("Cart not found with ID: " + cartId));
+    @Transactional
+    public void clearCartByUser(Long userId) {
+        Cart cart = cartRepository.findByUser_IdUser(userId)
+                .orElseThrow(() -> new NotFoundException("Cart not found"));
 
-        // 🔹 Xóa tất cả cart items theo cartId, không dùng entity list
-        cartItemRepository.deleteAllByCart_IdCart(cartId);
+        // Chỉ xóa item thuộc cart của user này
+        cartItemRepository.deleteAllByCart_IdCart(cart.getIdCart());
 
-        // 🔹 Reset total
         cart.setTotalAmount(0.0);
-        cartRepository.save(cart);
-    }
-
-
-    //Update cart total
-    private void updateCartTotal(Cart cart) {
-        List<CartItem> items = cartItemRepository.findByCart_IdCart(cart.getIdCart());
-        double total = items.stream().mapToDouble(CartItem::getTotalPrice).sum();
-        cart.setTotalAmount(total);
         cartRepository.save(cart);
     }
 }

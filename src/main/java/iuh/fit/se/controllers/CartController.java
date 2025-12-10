@@ -3,8 +3,8 @@ package iuh.fit.se.controllers;
 import iuh.fit.se.dtos.cart.CartResponseDTO;
 import iuh.fit.se.dtos.cartitem.CartItemRequestDTO;
 import iuh.fit.se.dtos.cartitem.CartItemResponseDTO;
-import iuh.fit.se.services.CartItemService;
 import iuh.fit.se.services.CartService;
+import iuh.fit.se.utils.JwtUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,73 +18,80 @@ import java.util.Map;
 public class CartController {
 
     private final CartService cartService;
-    private final CartItemService cartItemService;
+    private final JwtUtil jwtUtil;
 
-    public CartController(CartService cartService, CartItemService cartItemService) {
+    public CartController(CartService cartService, JwtUtil jwtUtil) {
         this.cartService = cartService;
-        this.cartItemService = cartItemService;
+        this.jwtUtil = jwtUtil;
     }
 
-    //Get cart by user ID
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<Map<String, Object>> getCartByUser(@PathVariable Long userId) {
+    private Long getUserIdFromToken(String authHeader) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+            return jwtUtil.extractUserId(token);
+        }
+        throw new RuntimeException("Invalid or missing Authorization header");
+    }
+
+    // GET My Cart
+    @GetMapping("/my-cart")
+    public ResponseEntity<Map<String, Object>> getMyCart(@RequestHeader("Authorization") String authHeader) {
+        Long userId = getUserIdFromToken(authHeader);
         CartResponseDTO cart = cartService.getCartByUser(userId);
-
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("success", true);
-        body.put("message", "Cart retrieved successfully");
-        body.put("data", cart);
-
-        return ResponseEntity.ok(body);
+        return buildResponse(HttpStatus.OK, "Cart retrieved successfully", cart);
     }
 
-    //Add product to cart
+    // ADD to Cart
     @PostMapping("/add")
-    public ResponseEntity<Map<String, Object>> addToCart(@RequestBody CartItemRequestDTO dto) {
-        CartItemResponseDTO addedItem = cartService.addItemToCart(dto);
-
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("success", true);
-        body.put("message", "Item added to cart successfully");
-        body.put("data", addedItem);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(body);
+    public ResponseEntity<Map<String, Object>> addToCart(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody CartItemRequestDTO dto) {
+        Long userId = getUserIdFromToken(authHeader);
+        CartItemResponseDTO addedItem = cartService.addItemToCart(userId, dto);
+        return buildResponse(HttpStatus.CREATED, "Item added successfully", addedItem);
     }
 
-    //Update quantity
+    // UPDATE Quantity
     @PutMapping("/item/{itemId}")
-    public ResponseEntity<Map<String, Object>> updateCartItem(@PathVariable Long itemId, @RequestParam Integer quantity) {
-        CartItemResponseDTO updated = cartService.updateItemQuantity(itemId, quantity);
+    public ResponseEntity<Map<String, Object>> updateCartItem(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable Long itemId,
+            @RequestParam Integer quantity) {
 
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("success", true);
-        body.put("message", "Cart item updated successfully");
-        body.put("data", updated);
+        Long userId = getUserIdFromToken(authHeader);
+        CartItemResponseDTO updated = cartService.updateItemQuantity(userId, itemId, quantity);
 
-        return ResponseEntity.ok(body);
+        return buildResponse(HttpStatus.OK, "Item updated successfully", updated);
     }
 
-    //Remove item
+    // DELETE One Item
     @DeleteMapping("/item/{itemId}")
-    public ResponseEntity<Map<String, Object>> removeItem(@PathVariable Long itemId) {
-        cartService.removeItemFromCart(itemId);
+    public ResponseEntity<Map<String, Object>> removeItem(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable Long itemId) {
 
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("success", true);
-        body.put("message", "Category deleted successfully (ID: " + itemId + ")");
+        Long userId = getUserIdFromToken(authHeader);
+        cartService.removeItemFromCart(userId, itemId);
 
-        return ResponseEntity.ok(body);
+        return buildResponse(HttpStatus.OK, "Item removed successfully", null);
     }
 
-    //Clear cart
-    @DeleteMapping("/{cartId}/clear")
-    public ResponseEntity<Map<String, Object>> clearCart(@PathVariable Long cartId) {
-        cartService.clearCart(cartId);
+    // DELETE All (Clear Cart)
+    @DeleteMapping("/clear")
+    public ResponseEntity<Map<String, Object>> clearMyCart(@RequestHeader("Authorization") String authHeader) {
+        Long userId = getUserIdFromToken(authHeader);
+        cartService.clearCartByUser(userId);
+        return buildResponse(HttpStatus.OK, "Cart cleared successfully", null);
+    }
 
+    // Helper tạo response cho gọn
+    private ResponseEntity<Map<String, Object>> buildResponse(HttpStatus status, String message, Object data) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("success", true);
-        body.put("message", "Cart cleared successfully");
-
-        return ResponseEntity.ok(body);
+        body.put("message", message);
+        if (data != null) {
+            body.put("data", data);
+        }
+        return ResponseEntity.status(status).body(body);
     }
 }

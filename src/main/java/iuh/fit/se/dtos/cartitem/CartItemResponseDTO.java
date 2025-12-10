@@ -9,10 +9,12 @@ public class CartItemResponseDTO {
     private Integer quantity;
     private Double totalPrice;
 
+    private boolean active;
+
     public CartItemResponseDTO() {
     }
 
-    public CartItemResponseDTO(Long idCartItem, Long idProduct, String nameProduct, String imageProduct, Double unitPrice, Integer quantity, Double totalPrice) {
+    public CartItemResponseDTO(Long idCartItem, Long idProduct, String nameProduct, String imageProduct, Double unitPrice, Integer quantity, Double totalPrice, boolean active) {
         this.idCartItem = idCartItem;
         this.idProduct = idProduct;
         this.nameProduct = nameProduct;
@@ -20,6 +22,7 @@ public class CartItemResponseDTO {
         this.unitPrice = unitPrice;
         this.quantity = quantity;
         this.totalPrice = totalPrice;
+        this.active = active;
     }
 
     public Long getIdCartItem() {
@@ -76,6 +79,14 @@ public class CartItemResponseDTO {
 
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
 

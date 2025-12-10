@@ -1,6 +1,7 @@
 package iuh.fit.se.services;
 
-import iuh.fit.se.dtos.profile.*;
+import iuh.fit.se.dtos.profile.UserProfileResponse;
+import iuh.fit.se.dtos.profile.UserProfileUpdateRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

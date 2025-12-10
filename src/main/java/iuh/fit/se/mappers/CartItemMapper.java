@@ -14,10 +14,10 @@ public interface CartItemMapper {
     @Mapping(target = "nameProduct", source = "product.nameProduct")
     @Mapping(target = "imageProduct", source = "product.imageProduct")
     @Mapping(target = "unitPrice", source = "product.price")
+    @Mapping(target = "active", source = "product.active")
     CartItemResponseDTO toResponseDTO(CartItem entity);
 
     //RequestDTO - Entity
-    // (Cart và Product sẽ được set trong Service, không map trực tiếp ở đây)
     @Mapping(target = "idCartItem", ignore = true)
     @Mapping(target = "cart", ignore = true)
     @Mapping(target = "product", ignore = true)

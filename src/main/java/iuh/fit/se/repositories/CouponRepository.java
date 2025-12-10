@@ -11,6 +11,7 @@ import java.util.Optional;
 @Repository
 public interface CouponRepository extends JpaRepository<Coupon, Long> {
     Optional<Coupon> findByCode(String code);
+
     //Tìm tất cả coupon ngoại trừ trạng thái DELETED
     List<Coupon> findByStatusNot(CouponStatus status);
 }

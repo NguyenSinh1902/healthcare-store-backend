@@ -6,18 +6,18 @@ import iuh.fit.se.dtos.cartitem.CartItemResponseDTO;
 
 public interface CartService {
 
-    //Get cart by user ID
+    // Lấy giỏ hàng
     CartResponseDTO getCartByUser(Long userId);
 
-    //Add products to cart
-    CartItemResponseDTO addItemToCart(CartItemRequestDTO requestDTO);
+    // Thêm vào giỏ
+    CartItemResponseDTO addItemToCart(Long userId, CartItemRequestDTO requestDTO);
 
-    //Update quantity of products in cart
-    CartItemResponseDTO updateItemQuantity(Long cartItemId, Integer newQuantity);
+    // Cập nhật số lượng (Cần userId để check chủ sở hữu)
+    CartItemResponseDTO updateItemQuantity(Long userId, Long cartItemId, Integer newQuantity);
 
-    //Delete 1 product from cart
-    void removeItemFromCart(Long cartItemId);
+    // Xóa 1 món (Cần userId để check chủ sở hữu)
+    void removeItemFromCart(Long userId, Long cartItemId);
 
-    //Clear cart
-    void clearCart(Long cartId);
+    // Xóa sạch giỏ
+    void clearCartByUser(Long userId);
 }

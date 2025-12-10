@@ -1,8 +1,8 @@
 package iuh.fit.se.services;
 
+import iuh.fit.se.dtos.product.ProductDetailDTO;
 import iuh.fit.se.dtos.product.ProductRequestDTO;
 import iuh.fit.se.dtos.product.ProductResponseDTO;
-import iuh.fit.se.dtos.product.ProductDetailDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

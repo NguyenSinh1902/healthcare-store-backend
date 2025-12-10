@@ -1,6 +1,7 @@
 package iuh.fit.se.services.impl;
 
-import iuh.fit.se.dtos.profile.*;
+import iuh.fit.se.dtos.profile.UserProfileResponse;
+import iuh.fit.se.dtos.profile.UserProfileUpdateRequest;
 import iuh.fit.se.entities.auth.Role;
 import iuh.fit.se.entities.auth.User;
 import iuh.fit.se.entities.auth.UserStatus;

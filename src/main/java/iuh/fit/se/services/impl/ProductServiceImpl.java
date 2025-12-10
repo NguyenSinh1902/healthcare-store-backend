@@ -1,10 +1,10 @@
 package iuh.fit.se.services.impl;
 
+import iuh.fit.se.dtos.product.ProductDetailDTO;
 import iuh.fit.se.dtos.product.ProductRequestDTO;
 import iuh.fit.se.dtos.product.ProductResponseDTO;
-import iuh.fit.se.dtos.product.ProductDetailDTO;
-import iuh.fit.se.entities.product.Product;
 import iuh.fit.se.entities.category.Category;
+import iuh.fit.se.entities.product.Product;
 import iuh.fit.se.entities.product.ProductGroup;
 import iuh.fit.se.exceptions.NotFoundException;
 import iuh.fit.se.mappers.ProductMapper;

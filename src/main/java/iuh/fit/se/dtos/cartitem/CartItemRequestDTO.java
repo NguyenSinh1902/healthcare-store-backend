@@ -5,45 +5,34 @@ import jakarta.validation.constraints.Positive;
 
 public class CartItemRequestDTO {
 
-    @NotNull(message = "Cart ID is required")
-    private Long idCart;
-
     @NotNull(message = "Product ID is required")
     private Long idProduct;
 
+    @NotNull(message = "Quantity is required")
     @Positive(message = "Quantity must be greater than 0")
     private Integer quantity;
 
     public CartItemRequestDTO() {
     }
 
-    public CartItemRequestDTO(Long idCart, Long idProduct, Integer quantity) {
-        this.idCart = idCart;
+    public CartItemRequestDTO(Long idProduct, Integer quantity) {
         this.idProduct = idProduct;
         this.quantity = quantity;
     }
 
-    public Long getIdCart() {
-        return idCart;
-    }
-
-    public void setIdCart(Long idCart) {
-        this.idCart = idCart;
-    }
-
-    public Long getIdProduct() {
+    public @NotNull(message = "Product ID is required") Long getIdProduct() {
         return idProduct;
     }
 
-    public void setIdProduct(Long idProduct) {
+    public void setIdProduct(@NotNull(message = "Product ID is required") Long idProduct) {
         this.idProduct = idProduct;
     }
 
-    public Integer getQuantity() {
+    public @NotNull(message = "Quantity is required") @Positive(message = "Quantity must be greater than 0") Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(@NotNull(message = "Quantity is required") @Positive(message = "Quantity must be greater than 0") Integer quantity) {
         this.quantity = quantity;
     }
 }

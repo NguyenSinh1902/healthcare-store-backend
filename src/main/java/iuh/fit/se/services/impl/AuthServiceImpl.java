@@ -3,19 +3,21 @@ package iuh.fit.se.services.impl;
 import iuh.fit.se.dtos.auth.*;
 import iuh.fit.se.entities.auth.Role;
 import iuh.fit.se.entities.auth.User;
-import iuh.fit.se.entities.auth.UserStatus; // Import UserStatus
+import iuh.fit.se.entities.auth.UserStatus;
 import iuh.fit.se.exceptions.BadRequestException;
 import iuh.fit.se.exceptions.ValidationException;
 import iuh.fit.se.repositories.UserRepository;
-import iuh.fit.se.services.EmailService; // Import EmailService
-import iuh.fit.se.utils.JwtUtil;
 import iuh.fit.se.services.AuthService;
+import iuh.fit.se.services.EmailService;
+import iuh.fit.se.utils.JwtUtil;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime; // Import LocalDateTime
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 @Service
 public class AuthServiceImpl implements AuthService {

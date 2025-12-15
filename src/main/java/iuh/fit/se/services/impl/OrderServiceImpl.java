@@ -9,6 +9,8 @@ import iuh.fit.se.entities.coupon.CouponStatus;
 import iuh.fit.se.entities.order.Order;
 import iuh.fit.se.entities.order.OrderDetail;
 import iuh.fit.se.entities.order.OrderStatus;
+import iuh.fit.se.entities.order.PaymentMethod;
+import iuh.fit.se.entities.product.Product;
 import iuh.fit.se.mappers.OrderDetailMapper;
 import iuh.fit.se.mappers.OrderMapper;
 import iuh.fit.se.repositories.*;
@@ -33,18 +35,20 @@ public class OrderServiceImpl implements OrderService {
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
     private final CouponRepository couponRepository;
+    private final ProductRepository productRepository;
 
     private final OrderMapper orderMapper;
     private final OrderDetailMapper orderDetailMapper;
     private final CartService cartService;
 
-    public OrderServiceImpl(OrderRepository orderRepository, OrderDetailRepository orderDetailRepository, CartRepository cartRepository, CartItemRepository cartItemRepository, UserRepository userRepository, CouponRepository couponRepository, OrderMapper orderMapper, OrderDetailMapper orderDetailMapper, CartService cartService) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderDetailRepository orderDetailRepository, CartRepository cartRepository, CartItemRepository cartItemRepository, UserRepository userRepository, CouponRepository couponRepository, ProductRepository productRepository, OrderMapper orderMapper, OrderDetailMapper orderDetailMapper, CartService cartService) {
         this.orderRepository = orderRepository;
         this.orderDetailRepository = orderDetailRepository;
         this.cartRepository = cartRepository;
         this.cartItemRepository = cartItemRepository;
         this.userRepository = userRepository;
         this.couponRepository = couponRepository;
+        this.productRepository = productRepository;
         this.orderMapper = orderMapper;
         this.orderDetailMapper = orderDetailMapper;
         this.cartService = cartService;
@@ -69,14 +73,35 @@ public class OrderServiceImpl implements OrderService {
                     .allMatch(item -> item.getCart().getIdCart().equals(cart.getIdCart()));
 
             if (!allBelongToUser) {
-                throw new RuntimeException("Phát hiện lỗi bảo mật: Sản phẩm được chọn không thuộc giỏ hàng của bạn.");
+                throw new RuntimeException("Security error detected: The selected product is not in your shopping cart.");
             }
         } else {
-            throw new RuntimeException("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
+            throw new RuntimeException("Please select at least one product to proceed to checkout.");
         }
 
         if (cartItems.isEmpty()) {
-            throw new RuntimeException("Không tìm thấy sản phẩm nào để thanh toán.");
+            throw new RuntimeException("No products were found to pay for.");
+        }
+
+        //CHECK VÀ TRỪ TỒN KHO
+        for (CartItem item : cartItems) {
+            Product product = item.getProduct();
+            int buyQuantity = item.getQuantity();
+
+            //CHECK ACTIVE
+            if (!product.isActive()) {
+                throw new RuntimeException("Sản phẩm '" + product.getNameProduct() + "' đã ngừng kinh doanh. Vui lòng bỏ khỏi giỏ hàng để tiếp tục.");
+            }
+
+            if (product.getStockQuantity() < buyQuantity) {
+                throw new RuntimeException("Sản phẩm '" + product.getNameProduct() + "' không đủ hàng tồn kho (Còn lại: " + product.getStockQuantity() + ")");
+            }
+
+            // Trừ tồn kho
+            product.setStockQuantity(product.getStockQuantity() - buyQuantity);
+
+            // Lưu lại Product đã trừ kho
+            productRepository.save(product);
         }
 
         //Calculate total amount
@@ -116,7 +141,15 @@ public class OrderServiceImpl implements OrderService {
         Order order = new Order();
         order.setUser(cart.getUser());
         order.setOrderDate(LocalDateTime.now());
-        order.setStatus(OrderStatus.CONFIRMED);
+
+        // Logic Status
+        if (orderRequestDTO.getPaymentMethod() == PaymentMethod.CASH) {
+            order.setStatus(OrderStatus.CONFIRMED);
+        } else {
+            // Nếu chọn thanh toán Card, ban đầu trạng thái là PENDING
+            order.setStatus(OrderStatus.PENDING);
+        }
+
         order.setPaymentMethod(orderRequestDTO.getPaymentMethod());
 
         String userProfileAddress = cart.getUser().getAddress();
@@ -154,10 +187,27 @@ public class OrderServiceImpl implements OrderService {
 
         orderDetailRepository.saveAll(orderDetails);
 
-        //Clear ONLY selected items
+        // Fix lỗi totalAmount không giảm
+        // Xóa item đã mua
         cartItemRepository.deleteAll(cartItems);
+        // Đẩy lệnh xóa xuống DB ngay lập tức
+        cartItemRepository.flush();
 
-        savedOrder.setOrderDetails(new HashSet<>(orderDetails));
+        // Tính lại tiền cho các món còn lại
+        List<CartItem> remainingItems = cartItemRepository.findByCart_IdCart(cart.getIdCart());
+        double newCartTotal = remainingItems.stream()
+                .mapToDouble(CartItem::getTotalPrice)
+                .sum();
+
+        // Cập nhật Cart
+        cart.setTotalAmount(newCartTotal);
+        cartRepository.save(cart);
+
+        if (savedOrder.getOrderDetails() == null) {
+            savedOrder.setOrderDetails(new HashSet<>());
+        }
+        savedOrder.getOrderDetails().addAll(orderDetails);
+
         return orderMapper.toResponseDTO(savedOrder);
     }
 

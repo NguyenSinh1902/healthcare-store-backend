@@ -76,13 +76,32 @@ public class CartServiceImpl implements CartService {
         Product product = productRepository.findById(requestDTO.getIdProduct())
                 .orElseThrow(() -> new NotFoundException("Product not found with ID: " + requestDTO.getIdProduct()));
 
+        //CHECK ACTIVE
+        if (!product.isActive()) {
+            throw new RuntimeException("Sản phẩm '" + product.getNameProduct() + "' hiện đã ngừng kinh doanh.");
+        }
+
+        //CHECK LOGIC HET HANG
+        if (product.getStockQuantity() == 0) {
+            throw new RuntimeException("Sản phẩm này hiện đã hết hàng.");
+        }
+        if (requestDTO.getQuantity() > product.getStockQuantity()) {
+            throw new RuntimeException("Số lượng yêu cầu vượt quá số lượng tồn kho (Còn lại: " + product.getStockQuantity() + ")");
+        }
+
         CartItem existingItem = cartItemRepository.findByCart_IdCartAndProduct_IdProduct(cart.getIdCart(), product.getIdProduct())
                 .orElse(null);
 
         CartItem cartItem;
         if (existingItem != null) {
-            existingItem.setQuantity(existingItem.getQuantity() + requestDTO.getQuantity());
-            existingItem.setTotalPrice(existingItem.getQuantity() * product.getPrice());
+            // Kiểm tra tổng số lượng sau khi cộng thêm
+            int newTotal = existingItem.getQuantity() + requestDTO.getQuantity();
+            if (newTotal > product.getStockQuantity()) {
+                throw new RuntimeException("Bạn đã có " + existingItem.getQuantity() + " sản phẩm trong giỏ. Không thể thêm quá số lượng tồn kho.");
+            }
+
+            existingItem.setQuantity(newTotal);
+            existingItem.setTotalPrice(newTotal * product.getPrice());
             cartItem = cartItemRepository.save(existingItem);
         } else {
             cartItem = new CartItem();
@@ -113,6 +132,18 @@ public class CartServiceImpl implements CartService {
             updateCartTotal(cart);
             return null;
         } else {
+            //CHECK LOGIC HẾT HÀNG KHI UPDATE
+            Product product = item.getProduct();
+
+            //CHECK ACTIVE: Khi update số lượng cũng phải check
+            if (!product.isActive()) {
+                throw new RuntimeException("Product '" + product.getNameProduct() + "' Business has ceased, updates are not possible.");
+            }
+
+            if (newQuantity > product.getStockQuantity()) {
+                throw new RuntimeException("The number of requests exceeds the available stock (Only: " + product.getStockQuantity() + ")");
+            }
+
             item.setQuantity(newQuantity);
             item.setTotalPrice(item.getProduct().getPrice() * newQuantity);
             CartItem savedItem = cartItemRepository.save(item);

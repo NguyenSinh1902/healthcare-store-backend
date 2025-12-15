@@ -72,6 +72,15 @@ public class SecurityConfig {
                         .requestMatchers("/api/orders/**").authenticated()
                         .requestMatchers("/api/profile/**").authenticated()
 
+                        //Payment (Tạo link & Callback)
+                        .requestMatchers("/api/payment/vnpay_return").permitAll()
+
+                        // tạo link payment
+                        .requestMatchers("/api/payment/**").authenticated()
+
+                        // Chat AI API (public)
+                        .requestMatchers("/api/chat/**").permitAll()
+
                         .anyRequest().authenticated()
                 )
 

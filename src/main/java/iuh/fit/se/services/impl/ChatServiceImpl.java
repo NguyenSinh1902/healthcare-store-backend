@@ -2,11 +2,16 @@ package iuh.fit.se.services.impl;
 
 import iuh.fit.se.dtos.gemini.GeminiRequest;
 import iuh.fit.se.dtos.gemini.GeminiResponse;
+import iuh.fit.se.entities.product.Product;
+import iuh.fit.se.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ChatServiceImpl {
@@ -18,9 +23,24 @@ public class ChatServiceImpl {
     private String apiUrl;
 
     private final RestTemplate restTemplate;
+    private final ProductRepository productRepository;
 
-    public ChatServiceImpl() {
+    public ChatServiceImpl(ProductRepository productRepository) {
         this.restTemplate = new RestTemplate();
+        this.productRepository = productRepository;
+    }
+
+    private String getProductContext() {
+        List<Product> products = productRepository.findByActiveTrue();
+
+        if (products.isEmpty()) {
+            return "Hiện tại cửa hàng chưa có sản phẩm nào.";
+        }
+
+        return products.stream()
+                .map(p -> String.format("- %s (Giá: %.0f VND, Tồn kho: %d, Thương hiệu: %s)",
+                        p.getNameProduct(), p.getPrice(), p.getStockQuantity(), p.getBrand()))
+                .collect(Collectors.joining("\n"));
     }
 
     public String chatWithGemini(String userMessage) {

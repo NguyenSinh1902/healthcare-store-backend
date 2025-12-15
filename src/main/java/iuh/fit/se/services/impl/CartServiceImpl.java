@@ -78,15 +78,15 @@ public class CartServiceImpl implements CartService {
 
         //CHECK ACTIVE
         if (!product.isActive()) {
-            throw new RuntimeException("Sản phẩm '" + product.getNameProduct() + "' hiện đã ngừng kinh doanh.");
+            throw new RuntimeException("Product '" + product.getNameProduct() + "' business has now ceased..");
         }
 
         //CHECK LOGIC HET HANG
         if (product.getStockQuantity() == 0) {
-            throw new RuntimeException("Sản phẩm này hiện đã hết hàng.");
+            throw new RuntimeException("This product is currently out of stock.");
         }
         if (requestDTO.getQuantity() > product.getStockQuantity()) {
-            throw new RuntimeException("Số lượng yêu cầu vượt quá số lượng tồn kho (Còn lại: " + product.getStockQuantity() + ")");
+            throw new RuntimeException("The number of requests exceeds the remaining inventory (Remaining quantity : " + product.getStockQuantity() + ")");
         }
 
         CartItem existingItem = cartItemRepository.findByCart_IdCartAndProduct_IdProduct(cart.getIdCart(), product.getIdProduct())
@@ -97,7 +97,7 @@ public class CartServiceImpl implements CartService {
             // Kiểm tra tổng số lượng sau khi cộng thêm
             int newTotal = existingItem.getQuantity() + requestDTO.getQuantity();
             if (newTotal > product.getStockQuantity()) {
-                throw new RuntimeException("Bạn đã có " + existingItem.getQuantity() + " sản phẩm trong giỏ. Không thể thêm quá số lượng tồn kho.");
+                throw new RuntimeException("You already have " + existingItem.getQuantity() + " products in the cart. The inventory level cannot be exceeded.");
             }
 
             existingItem.setQuantity(newTotal);

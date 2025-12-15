@@ -8,7 +8,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/chat")
-@CrossOrigin(origins = "*") // Nhớ cấu hình cái này cho khớp với SecurityConfig
+@CrossOrigin(origins = "*")
 public class ChatController {
 
     private final ChatServiceImpl chatService;

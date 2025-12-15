@@ -2,8 +2,8 @@ package iuh.fit.se.services.impl;
 
 import iuh.fit.se.dtos.gemini.GeminiRequest;
 import iuh.fit.se.dtos.gemini.GeminiResponse;
-import iuh.fit.se.entities.product.Product;
-import iuh.fit.se.repositories.ProductRepository;
+import iuh.fit.se.entities.product.Product; // Import Product
+import iuh.fit.se.repositories.ProductRepository; // Import Repo
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -23,20 +23,24 @@ public class ChatServiceImpl {
     private String apiUrl;
 
     private final RestTemplate restTemplate;
-    private final ProductRepository productRepository;
+    private final ProductRepository productRepository; // Inject Repo
 
+    // Inject ProductRepository vào Constructor
     public ChatServiceImpl(ProductRepository productRepository) {
         this.restTemplate = new RestTemplate();
         this.productRepository = productRepository;
     }
 
     private String getProductContext() {
+        //Lấy danh sách sản phẩm (đang bán) từ DB
+        //Nếu shop có hàng nghìn món thì chỉ nên lấy tên, giá và số lượng để tiết kiệm token
         List<Product> products = productRepository.findByActiveTrue();
 
         if (products.isEmpty()) {
             return "Hiện tại cửa hàng chưa có sản phẩm nào.";
         }
 
+        // Tạo chuỗi văn bản mô tả danh sách sản phẩm
         return products.stream()
                 .map(p -> String.format("- %s (Giá: %.0f VND, Tồn kho: %d, Thương hiệu: %s)",
                         p.getNameProduct(), p.getPrice(), p.getStockQuantity(), p.getBrand()))
@@ -48,7 +52,25 @@ public class ChatServiceImpl {
                 .queryParam("key", apiKey)
                 .toUriString();
 
-        GeminiRequest request = new GeminiRequest(userMessage);
+        // Lấy dữ liệu sản phẩm từ DB
+        String productData = getProductContext();
+
+        // Tạo Prompt (Kịch bản cho AI)
+        String systemInstruction = String.format("""
+            Bạn là nhân viên tư vấn nhiệt tình của shop HealthCare.
+            Dưới đây là danh sách sản phẩm hiện có tại shop:
+            %s
+            
+            Quy tắc trả lời:
+            1. Chỉ trả lời dựa trên thông tin sản phẩm ở trên.
+            2. Nếu khách hỏi sản phẩm không có trong danh sách, hãy báo là shop chưa kinh doanh.
+            3. Trả lời ngắn gọn, thân thiện, dùng biểu tượng cảm xúc (emoji).
+            4. Luôn báo giá chính xác theo danh sách.
+            
+            Câu hỏi của khách: %s
+            """, productData, userMessage);
+
+        GeminiRequest request = new GeminiRequest(systemInstruction);
 
         try {
             GeminiResponse response = restTemplate.postForObject(finalUrl, request, GeminiResponse.class);

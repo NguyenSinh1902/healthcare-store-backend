@@ -191,4 +191,59 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentMapper.toResponseDTO(savedPayment);
     }
 
+    @Override
+    public Map<String, Object> getAdminStatistics() {
+        Map<String, Object> stats = new HashMap<>();
+
+        Double totalRevenue = paymentRepository.sumTotalRevenue();
+        stats.put("totalRevenue", totalRevenue != null ? totalRevenue : 0.0);
+
+        Long successCount = paymentRepository.countByStatus(PaymentStatus.SUCCESS);
+        stats.put("successTransactions", successCount);
+
+        Long failedCount = paymentRepository.countByStatus(PaymentStatus.FAILED);
+        stats.put("failedTransactions", failedCount);
+
+        long totalCount = paymentRepository.count();
+        stats.put("totalTransactions", totalCount);
+
+        return stats;
+    }
+
+    @Override
+    public List<Map<String, Object>> getRevenueChartData() {
+        List<Object[]> rawData = paymentRepository.getRevenueLast7Days();
+        List<Map<String, Object>> chartData = new ArrayList<>();
+
+        for (Object[] row : rawData) {
+            Map<String, Object> item = new HashMap<>();
+            item.put("date", row[0].toString());
+            item.put("revenue", row[1]);
+            chartData.add(item);
+        }
+        return chartData;
+    }
+
+    @Override
+    public List<PaymentResponseDTO> getPayments(String keyword, String statusStr, String startDateStr, String endDateStr) {
+
+        PaymentStatus status = null;
+        if (statusStr != null && !statusStr.isEmpty()) {
+            try {
+                status = PaymentStatus.valueOf(statusStr.toUpperCase());
+            } catch (IllegalArgumentException e) {}
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime startDateTime = (startDateStr != null && !startDateStr.isEmpty())
+                ? LocalDate.parse(startDateStr, formatter).atStartOfDay() : null;
+        LocalDateTime endDateTime = (endDateStr != null && !endDateStr.isEmpty())
+                ? LocalDate.parse(endDateStr, formatter).atTime(23, 59, 59) : null;
+
+        List<Payment> payments = paymentRepository.findAllPayments(keyword, status, startDateTime, endDateTime);
+
+        return payments.stream()
+                .map(payment -> paymentMapper.toResponseDTO(payment))
+                .collect(Collectors.toList());
+    }
 }

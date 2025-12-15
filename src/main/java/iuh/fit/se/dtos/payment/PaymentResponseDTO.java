@@ -7,7 +7,7 @@ public class PaymentResponseDTO {
     private Long orderId;
     private Double amount;
     private String transactionRef;
-    private String status; // Trả về String của Enum
+    private String status;
     private LocalDateTime paymentDate;
 
     public PaymentResponseDTO() {}

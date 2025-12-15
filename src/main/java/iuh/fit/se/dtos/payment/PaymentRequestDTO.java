@@ -6,7 +6,6 @@ public class PaymentRequestDTO {
     @NotNull(message = "Order ID is required")
     private Long orderId;
 
-    // Có thể mở rộng thêm bankCode nếu muốn user chọn bank trước (NCB, VCB...)
     private String bankCode;
 
     public PaymentRequestDTO() {}

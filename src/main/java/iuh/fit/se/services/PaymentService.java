@@ -14,4 +14,11 @@ public interface PaymentService {
 
     // Xử lý callback
     PaymentResponseDTO handleVnPayCallback(HttpServletRequest req);
+
+    //ADMIN
+    Map<String, Object> getAdminStatistics();
+
+    List<Map<String, Object>> getRevenueChartData();
+
+    List<PaymentResponseDTO> getPayments(String keyword, String statusStr, String startDateStr, String endDateStr);
 }

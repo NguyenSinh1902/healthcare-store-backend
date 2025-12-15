@@ -12,7 +12,6 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPayment;
 
-    // 1 Payment gắn liền với 1 Order
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_order", nullable = false, unique = true)
     private Order order;
@@ -20,11 +19,9 @@ public class Payment {
     @Column(nullable = false)
     private Double amount;
 
-    // Mã giao dịch từ VNPAY (vnp_TransactionNo)
     @Column(name = "transaction_ref")
     private String transactionRef;
 
-    // Mã giao dịch từ phía Server mình gửi đi (vnp_TxnRef - thường là idOrder)
     @Column(name = "order_info_code")
     private String orderInfoCode;
 
@@ -36,11 +33,10 @@ public class Payment {
     private LocalDateTime createdAt;
 
     @Column(name = "payment_date")
-    private LocalDateTime paymentDate; // Thời điểm VNPAY trả về thành công
+    private LocalDateTime paymentDate;
 
     public Payment() {}
 
-    // Constructor nhanh
     public Payment(Order order, Double amount, String orderInfoCode, PaymentStatus status) {
         this.order = order;
         this.amount = amount;

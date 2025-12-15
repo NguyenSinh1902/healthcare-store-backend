@@ -9,6 +9,6 @@ import org.mapstruct.Mapping;
 public interface PaymentMapper {
 
     @Mapping(target = "orderId", source = "order.idOrder")
-    @Mapping(target = "status", source = "status") // Enum to String tự động
+    @Mapping(target = "status", source = "status")
     PaymentResponseDTO toResponseDTO(Payment payment);
 }

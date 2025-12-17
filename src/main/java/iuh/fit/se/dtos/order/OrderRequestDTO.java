@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import iuh.fit.se.entities.order.PaymentMethod;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 import java.util.List;
 
@@ -15,11 +16,13 @@ public class OrderRequestDTO {
     @NotNull(message = "Payment method is required") // CASH, CARD
     private PaymentMethod paymentMethod;
 
+    @Pattern(regexp = "^0\\d{9,10}$", message = "Invalid phone number format")
+    private String phoneNumber;
+
     private Long idCoupon;
 
     private List<Long> selectedCartItemIds;
 
-    // Các field dưới BE sẽ tự tính, không để FE gửi lên
     @JsonIgnore
     private Double totalAmount;
 
@@ -32,11 +35,15 @@ public class OrderRequestDTO {
     // --- Constructors ---
     public OrderRequestDTO() {}
 
-    public OrderRequestDTO(String deliveryAddress, PaymentMethod paymentMethod, Long idCoupon, List<Long> selectedCartItemIds) {
+    public OrderRequestDTO(String deliveryAddress, PaymentMethod paymentMethod, String phoneNumber, Long idCoupon, List<Long> selectedCartItemIds, Double totalAmount, Double couponDiscount, Double finalAmount) {
         this.deliveryAddress = deliveryAddress;
         this.paymentMethod = paymentMethod;
+        this.phoneNumber = phoneNumber;
         this.idCoupon = idCoupon;
         this.selectedCartItemIds = selectedCartItemIds;
+        this.totalAmount = totalAmount;
+        this.couponDiscount = couponDiscount;
+        this.finalAmount = finalAmount;
     }
 
     // --- Getters & Setters ---
@@ -54,6 +61,14 @@ public class OrderRequestDTO {
 
     public void setPaymentMethod(@NotNull(message = "Payment method is required") PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public @Pattern(regexp = "^0\\d{9,10}$", message = "Invalid phone number format") String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(@Pattern(regexp = "^0\\d{9,10}$", message = "Invalid phone number format") String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public Long getIdCoupon() {

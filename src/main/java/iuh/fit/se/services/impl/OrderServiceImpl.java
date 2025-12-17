@@ -54,21 +54,25 @@ public class OrderServiceImpl implements OrderService {
         this.cartService = cartService;
     }
 
+    //Làm tròn 2 chữ số thập phân
+    private double round(double value) {
+        return Math.round(value * 100.0) / 100.0;
+    }
+
     @Override
     public OrderResponseDTO createOrderFromCart(Long userId, OrderRequestDTO orderRequestDTO) {
-        //Get user cart
+        // Get user cart
         Cart cart = cartRepository.findByUser_IdUser(userId)
                 .orElseThrow(() -> new RuntimeException("Cart not found for user id: " + userId));
 
-        //Get the CartItem list
+        // Get the CartItem list based on selection
         List<CartItem> cartItems;
-
         List<Long> selectedIds = orderRequestDTO.getSelectedCartItemIds();
 
         if (selectedIds != null && !selectedIds.isEmpty()) {
-
             cartItems = cartItemRepository.findAllById(selectedIds);
 
+            // Security check: Ensure items belong to the current user's cart
             boolean allBelongToUser = cartItems.stream()
                     .allMatch(item -> item.getCart().getIdCart().equals(cart.getIdCart()));
 
@@ -83,33 +87,39 @@ public class OrderServiceImpl implements OrderService {
             throw new RuntimeException("No products were found to pay for.");
         }
 
-        //CHECK VÀ TRỪ TỒN KHO
+        // CHECK va tru ton kho
         for (CartItem item : cartItems) {
             Product product = item.getProduct();
             int buyQuantity = item.getQuantity();
 
-            //CHECK ACTIVE
+            // CHECK ACTIVE
             if (!product.isActive()) {
                 throw new RuntimeException("Sản phẩm '" + product.getNameProduct() + "' đã ngừng kinh doanh. Vui lòng bỏ khỏi giỏ hàng để tiếp tục.");
             }
 
+            // CHECK STOCK
             if (product.getStockQuantity() < buyQuantity) {
                 throw new RuntimeException("Sản phẩm '" + product.getNameProduct() + "' không đủ hàng tồn kho (Còn lại: " + product.getStockQuantity() + ")");
             }
 
-            // Trừ tồn kho
+            // tru ton kho
             product.setStockQuantity(product.getStockQuantity() - buyQuantity);
 
-            // Lưu lại Product đã trừ kho
+            // luu lai
             productRepository.save(product);
         }
 
-        //Calculate total amount
-        double totalAmount = cartItems.stream()
+        //tinh toan don hang(lam tron)
+
+        // 1. tinh tong tien hang (Raw Total)
+        double rawTotal = cartItems.stream()
                 .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity())
                 .sum();
 
-        //Validate & Apply Coupon
+        // lam tron tong tien hang
+        double totalAmount = round(rawTotal);
+
+        // Validate & Apply Coupon
         double couponDiscount = 0.0;
         Coupon coupon = null;
 
@@ -134,15 +144,15 @@ public class OrderServiceImpl implements OrderService {
             couponDiscount = coupon.getDiscountAmount();
         }
 
-        //Calculate finalAmount
-        double finalAmount = Math.max(totalAmount - couponDiscount, 0.0);
+        // 2. Tinh (Final Amount) lam tron
+        double finalAmount = round(Math.max(totalAmount - couponDiscount, 0.0));
 
-        //Create Order object
+        // Create Order object
         Order order = new Order();
         order.setUser(cart.getUser());
         order.setOrderDate(LocalDateTime.now());
 
-        // Logic Status
+        // Logic Status based on Payment Method
         if (orderRequestDTO.getPaymentMethod() == PaymentMethod.CASH) {
             order.setStatus(OrderStatus.CONFIRMED);
         } else {
@@ -152,18 +162,38 @@ public class OrderServiceImpl implements OrderService {
 
         order.setPaymentMethod(orderRequestDTO.getPaymentMethod());
 
+        //xu ly dia chi
         String userProfileAddress = cart.getUser().getAddress();
         String inputAddress = orderRequestDTO.getDeliveryAddress();
         String finalAddress;
 
-        if (userProfileAddress != null && !userProfileAddress.trim().isEmpty()) {
-            finalAddress = userProfileAddress;
-        } else if (inputAddress != null && !inputAddress.trim().isEmpty()) {
+        if (inputAddress != null && !inputAddress.trim().isEmpty()) {
             finalAddress = inputAddress;
+        } else if (userProfileAddress != null && !userProfileAddress.trim().isEmpty()) {
+            finalAddress = userProfileAddress;
         } else {
             throw new RuntimeException("Delivery address is required.");
         }
 
+        //xu ly so dien thoai
+        String userProfilePhone = cart.getUser().getPhone(); // Lấy từ User Profile
+        String inputPhone = orderRequestDTO.getPhoneNumber(); // Lấy từ form nhập
+        String finalPhone;
+
+        //uu tien so nhap tren form
+        if (inputPhone != null && !inputPhone.trim().isEmpty()) {
+            finalPhone = inputPhone;
+        }
+        // neu khong co thi lay so tu profile
+        else if (userProfilePhone != null && !userProfilePhone.trim().isEmpty()) {
+            finalPhone = userProfilePhone;
+        }
+        // cai nao cung khong co thi bao loi
+        else {
+            throw new RuntimeException("Phone number is required for delivery.");
+        }
+
+        order.setPhoneNumber(finalPhone);
         order.setDeliveryAddress(finalAddress);
         order.setCoupon(coupon);
         order.setTotalAmount(totalAmount);
@@ -172,7 +202,7 @@ public class OrderServiceImpl implements OrderService {
 
         Order savedOrder = orderRepository.save(order);
 
-        //CartItem => OrderDetail
+        // 3. CartItem => OrderDetail (lam tron TOTAL PRICE)
         List<OrderDetail> orderDetails = cartItems.stream()
                 .map(item -> {
                     OrderDetail detail = new OrderDetail();
@@ -180,29 +210,32 @@ public class OrderServiceImpl implements OrderService {
                     detail.setProduct(item.getProduct());
                     detail.setQuantity(item.getQuantity());
                     detail.setUnitPrice(item.getProduct().getPrice());
-                    detail.setTotalPrice(item.getProduct().getPrice() * item.getQuantity());
+
+                    // lam tron total price
+                    detail.setTotalPrice(round(item.getProduct().getPrice() * item.getQuantity()));
+
                     return detail;
                 })
                 .collect(Collectors.toList());
 
         orderDetailRepository.saveAll(orderDetails);
 
-        // Fix lỗi totalAmount không giảm
-        // Xóa item đã mua
+        // xu ly cart sau khi tao don hang
+        // 1. xoa cac CartItem da chon mua
         cartItemRepository.deleteAll(cartItems);
-        // Đẩy lệnh xóa xuống DB ngay lập tức
-        cartItemRepository.flush();
+        cartItemRepository.flush(); // Đẩy lệnh xóa xuống DB ngay để tính toán lại chính xác
 
-        // Tính lại tiền cho các món còn lại
+        // 2. tinh toan lai tong tien cho gio hang
         List<CartItem> remainingItems = cartItemRepository.findByCart_IdCart(cart.getIdCart());
-        double newCartTotal = remainingItems.stream()
+        double newCartTotalRaw = remainingItems.stream()
                 .mapToDouble(CartItem::getTotalPrice)
                 .sum();
 
-        // Cập nhật Cart
-        cart.setTotalAmount(newCartTotal);
+        // lam tron tong tien gio hang
+        cart.setTotalAmount(round(newCartTotalRaw));
         cartRepository.save(cart);
 
+        // Map response
         if (savedOrder.getOrderDetails() == null) {
             savedOrder.setOrderDetails(new HashSet<>());
         }

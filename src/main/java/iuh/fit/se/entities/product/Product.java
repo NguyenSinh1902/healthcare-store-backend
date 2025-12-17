@@ -41,20 +41,16 @@ public class Product {
     @Column(nullable = false)
     private Integer stockQuantity;
 
+    //Bỏ Pattern, thêm columnDefinition = "TEXT"
     @NotBlank(message = "Product image URL is required")
-    @Pattern(
-            regexp = ".*\\.(png|jpg|jpeg)$",
-            message = "Image URL must be valid (.jpg, .png, .jpeg)"
-    )
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String imageProduct;
 
-    // ⭐ DANH SÁCH NHIỀU THUMBNAIL
+    //columnDefinition = "TEXT" cho thumbnail
     @ElementCollection
-    @CollectionTable(name="product_thumbnails", joinColumns=@JoinColumn(name="product_id"))
-    @Column(name="thumbnail_url")
+    @CollectionTable(name = "product_thumbnails", joinColumns = @JoinColumn(name = "product_id"))
+    @Column(name = "thumbnail_url", columnDefinition = "TEXT")
     private List<String> thumbnails;
-
 
     @NotBlank(message = "Product description is required")
     @Size(min = 10, message = "Description must be at least 10 characters long")
@@ -65,7 +61,6 @@ public class Product {
     @Column(columnDefinition = "TEXT")
     private String information;
 
-    // N Product -> 1 Category
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_category", referencedColumnName = "id_category", nullable = false)
     @NotNull(message = "Category is required")
@@ -75,12 +70,14 @@ public class Product {
     @Column(nullable = false)
     private ProductGroup productGroup = ProductGroup.NORMAL;
 
-    // 👇 THÊM FIELD NÀY VÀO
     @Column(name = "is_active")
-    private boolean active = true; // Mặc định là true (Đang hoạt động/Đang bán)
+    private boolean active = true;
 
-    public Product() {}
+    // Constructor rỗng
+    public Product() {
+    }
 
+    // Constructor
     public Product(Long idProduct, String nameProduct, String brand, Double price, Double oldPrice, Integer discountPercent, Integer stockQuantity, String imageProduct, List<String> thumbnails, String description, String information, Category category, ProductGroup productGroup, boolean active) {
         this.idProduct = idProduct;
         this.nameProduct = nameProduct;
@@ -154,17 +151,11 @@ public class Product {
         this.stockQuantity = stockQuantity;
     }
 
-    public @NotBlank(message = "Product image URL is required") @Pattern(
-            regexp = ".*\\.(png|jpg|jpeg)$",
-            message = "Image URL must be valid (.jpg, .png, .jpeg)"
-    ) String getImageProduct() {
+    public @NotBlank(message = "Product image URL is required") String getImageProduct() {
         return imageProduct;
     }
 
-    public void setImageProduct(@NotBlank(message = "Product image URL is required") @Pattern(
-            regexp = ".*\\.(png|jpg|jpeg)$",
-            message = "Image URL must be valid (.jpg, .png, .jpeg)"
-    ) String imageProduct) {
+    public void setImageProduct(@NotBlank(message = "Product image URL is required") String imageProduct) {
         this.imageProduct = imageProduct;
     }
 

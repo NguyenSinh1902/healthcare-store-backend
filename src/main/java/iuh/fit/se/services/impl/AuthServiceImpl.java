@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -36,42 +37,57 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public RegisterResponse register(RegisterRequest request) {
 
-        //Kiem tra trung email
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new BadRequestException("Email already exists in the system");
+        //kiem tra xem user da ton tai chua
+        Optional<User> existingUserOpt = userRepository.findByEmail(request.getEmail());
+
+        User user;
+
+        if (existingUserOpt.isPresent()) {
+            User existingUser = existingUserOpt.get();
+
+            //tai khoan ACTIVE hoac BANNED
+            if (existingUser.getStatus() == UserStatus.ACTIVE || existingUser.getStatus() == UserStatus.BANNED) {
+                throw new BadRequestException("Email already exists in the system");
+            }
+
+            //tai khoan INACTIVE (Can phan loai)
+            if (existingUser.getStatus() == UserStatus.INACTIVE) {
+
+                // neu Code là NULL (hoac rong) -> Tuc là Admin da update status(inactive) -> chan
+                if (existingUser.getVerificationCode() == null || existingUser.getVerificationCode().trim().isEmpty()) {
+                    throw new BadRequestException("Your account has been locked by Administrator. Please contact support.");
+                }
+
+                // Neu Code khac NULL -> dang dang ky -> cho phep dang ky tiep (Reset Code)
+            }
+
+            //tai su dung user (Cho truong hop quen verify)
+            user = existingUser;
+            user.setFullName(request.getFullName());
+            String hashed = BCrypt.hashpw(request.getPassword(), BCrypt.gensalt());
+            user.setPassword(hashed);
+            // user.setRole(...) // khong doi role neu user da ton tai
+
+        } else {
+            //tao moi user
+            user = new User();
+            user.setFullName(request.getFullName());
+            user.setEmail(request.getEmail());
+            String hashed = BCrypt.hashpw(request.getPassword(), BCrypt.gensalt());
+            user.setPassword(hashed);
+            user.setRole(request.getRole() == null ? Role.USER : request.getRole());
+            user.setStatus(UserStatus.INACTIVE);
         }
 
-        //Kiem tra xac nhan mat khau
-        if (!request.getPassword().equals(request.getConfirmPassword())) {
-            List<Map<String, String>> errors = List.of(
-                    Map.of("field", "confirmPassword", "message", "Password confirmation does not match")
-            );
-            throw new ValidationException(errors);
-        }
-
-        //Ma hoa mat khau bang BCrypt
-        String hashed = BCrypt.hashpw(request.getPassword(), BCrypt.gensalt());
-
-        //Tao user moi
-        User user = new User();
-        user.setFullName(request.getFullName());
-        user.setEmail(request.getEmail());
-        user.setPassword(hashed);
-        user.setRole(request.getRole() == null ? Role.USER : request.getRole());
-
-        user.setStatus(UserStatus.INACTIVE);
-
-        // Tao ma verify
-        String code = String.valueOf(new Random().nextInt(900000) + 100000); // Random 6 số
+        //xu ly chung verification(tao code moi, thoi gian het han)
+        String code = String.valueOf(new Random().nextInt(900000) + 100000);
         user.setVerificationCode(code);
-        user.setVerificationExpiration(LocalDateTime.now().plusMinutes(15)); // Hết hạn sau 15p
+        user.setVerificationExpiration(LocalDateTime.now().plusMinutes(15));
 
-        userRepository.save(user);
+        userRepository.save(user); // Save de len user cũ hoac insert user moi
 
-        // Gửi email
         emailService.sendVerificationEmail(user.getEmail(), code);
 
-        //Tra ket qua
         RegisterResponse response = new RegisterResponse();
         response.setSuccess(true);
         response.setEmail(user.getEmail());
@@ -80,6 +96,7 @@ public class AuthServiceImpl implements AuthService {
 
         return response;
     }
+
     //Verify
     public void verifyAccount(VerifyRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
@@ -122,8 +139,17 @@ public class AuthServiceImpl implements AuthService {
         }
 
         switch (user.getStatus()) {
-            case INACTIVE -> throw new BadRequestException("Your account is not verified. Please check email.");
-            case BANNED -> throw new BadRequestException("Your account has been banned.");
+            case INACTIVE -> {
+                // neu co ma xac thuc -> Tuc la tai khoan moi, chua verify
+                if (user.getVerificationCode() != null) {
+                    throw new BadRequestException("Your account is not verified. Please check email.");
+                }
+                // neu khong co ma (null) -> Tuc là Admin da update status(inactive) -> chan
+                else {
+                    throw new BadRequestException("Your account has been locked by Administrator. Please contact support.");
+                }
+            }
+            case BANNED -> throw new BadRequestException("Your account has been banned for violating policies.");
             default -> {}
         }
 

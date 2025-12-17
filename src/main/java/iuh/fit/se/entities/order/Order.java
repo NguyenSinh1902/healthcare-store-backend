@@ -3,10 +3,7 @@ package iuh.fit.se.entities.order;
 import iuh.fit.se.entities.auth.User;
 import iuh.fit.se.entities.coupon.Coupon;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -30,6 +27,12 @@ public class Order {
     @NotBlank(message = "Delivery address is required")
     @Size(max = 255)
     private String deliveryAddress;
+
+    // 👇 THÊM MỚI TRƯỜNG NÀY
+    @NotBlank(message = "Phone number is required")
+    @Pattern(regexp = "^0\\d{9,10}$", message = "Invalid phone number format")
+    @Column(name = "phone_number", nullable = false)
+    private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -59,11 +62,12 @@ public class Order {
 
     public Order() {}
 
-    public Order(Long idOrder, LocalDateTime orderDate, User user, String deliveryAddress, PaymentMethod paymentMethod, Double totalAmount, Double couponDiscount, Double finalAmount, OrderStatus status, Coupon coupon, Set<OrderDetail> orderDetails) {
+    public Order(Long idOrder, LocalDateTime orderDate, User user, String deliveryAddress, String phoneNumber, PaymentMethod paymentMethod, Double totalAmount, Double couponDiscount, Double finalAmount, OrderStatus status, Coupon coupon, Set<OrderDetail> orderDetails) {
         this.idOrder = idOrder;
         this.orderDate = orderDate;
         this.user = user;
         this.deliveryAddress = deliveryAddress;
+        this.phoneNumber = phoneNumber;
         this.paymentMethod = paymentMethod;
         this.totalAmount = totalAmount;
         this.couponDiscount = couponDiscount;
@@ -105,6 +109,14 @@ public class Order {
 
     public void setDeliveryAddress(@NotBlank(message = "Delivery address is required") @Size(max = 255) String deliveryAddress) {
         this.deliveryAddress = deliveryAddress;
+    }
+
+    public @NotBlank(message = "Phone number is required") @Pattern(regexp = "^0\\d{9,10}$", message = "Invalid phone number format") String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(@NotBlank(message = "Phone number is required") @Pattern(regexp = "^0\\d{9,10}$", message = "Invalid phone number format") String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public PaymentMethod getPaymentMethod() {

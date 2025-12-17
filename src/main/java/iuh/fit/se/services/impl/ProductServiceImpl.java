@@ -234,7 +234,7 @@ public class ProductServiceImpl implements ProductService {
 
         productRepository.save(product);
 
-        System.out.println("Đã xóa mềm sản phẩm ID: " + id);
+        System.out.println("Product ID has been soft-deleted: " + id);
     }
 
     @Override

@@ -9,6 +9,7 @@ public class OrderResponseDTO {
     private Long idUser;
     private LocalDateTime orderDate;
     private String deliveryAddress;
+    private String phoneNumber;
     private String paymentMethod;
     private Double totalAmount;
     private Double couponDiscount;
@@ -19,10 +20,12 @@ public class OrderResponseDTO {
 
     public OrderResponseDTO() {}
 
-    public OrderResponseDTO(Long idOrder, LocalDateTime orderDate, String deliveryAddress, String paymentMethod, Double totalAmount, Double couponDiscount, Double finalAmount, String status, String couponCode, List<OrderDetailResponseDTO> orderDetails) {
+    public OrderResponseDTO(Long idOrder, Long idUser, LocalDateTime orderDate, String deliveryAddress, String phoneNumber, String paymentMethod, Double totalAmount, Double couponDiscount, Double finalAmount, String status, String couponCode, List<OrderDetailResponseDTO> orderDetails) {
         this.idOrder = idOrder;
+        this.idUser = idUser;
         this.orderDate = orderDate;
         this.deliveryAddress = deliveryAddress;
+        this.phoneNumber = phoneNumber;
         this.paymentMethod = paymentMethod;
         this.totalAmount = totalAmount;
         this.couponDiscount = couponDiscount;
@@ -64,6 +67,14 @@ public class OrderResponseDTO {
 
     public void setDeliveryAddress(String deliveryAddress) {
         this.deliveryAddress = deliveryAddress;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getPaymentMethod() {

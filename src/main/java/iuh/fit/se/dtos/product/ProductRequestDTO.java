@@ -1,7 +1,6 @@
 package iuh.fit.se.dtos.product;
 
 import jakarta.validation.constraints.*;
-
 import java.util.List;
 
 public class ProductRequestDTO {
@@ -13,7 +12,6 @@ public class ProductRequestDTO {
     @NotBlank(message = "Brand is required")
     @Size(min = 2, max = 100, message = "Brand name must be between 2 and 100 characters")
     private String brand;
-
 
     private Double price;
 
@@ -28,14 +26,9 @@ public class ProductRequestDTO {
     @PositiveOrZero(message = "Stock quantity cannot be negative")
     private Integer stockQuantity;
 
-    //@NotBlank(message = "Product image URL is required")
-    @Pattern(
-            regexp = ".*\\.(png|jpg|jpeg)$",
-            message = "Image URL must be valid (.jpg, .png, .jpeg)"
-    )
+    //Bo @Pattern để tránh lỗi với link Cloudinary
     private String imageProduct;
 
-    //DANH SÁCH NHIỀU ẢNH THUMBNAIL
     private List<String> thumbnails;
 
     @NotBlank(message = "Product description is required")
@@ -49,9 +42,11 @@ public class ProductRequestDTO {
 
     private String productGroup;
 
+    // Constructor rỗng
     public ProductRequestDTO() {
     }
 
+    // Constructor đầy đủ
     public ProductRequestDTO(String nameProduct, String brand, Double price, Double oldPrice, Integer discountPercent, Integer stockQuantity, String imageProduct, List<String> thumbnails, String description, String information, Long idCategory, String productGroup) {
         this.nameProduct = nameProduct;
         this.brand = brand;
@@ -66,6 +61,8 @@ public class ProductRequestDTO {
         this.idCategory = idCategory;
         this.productGroup = productGroup;
     }
+
+    // Getters and Setters
 
     public @NotBlank(message = "Product name is required") @Size(min = 3, max = 150, message = "Product name must be between 3 and 150 characters") String getNameProduct() {
         return nameProduct;
@@ -115,17 +112,11 @@ public class ProductRequestDTO {
         this.stockQuantity = stockQuantity;
     }
 
-    public @Pattern(
-            regexp = ".*\\.(png|jpg|jpeg)$",
-            message = "Image URL must be valid (.jpg, .png, .jpeg)"
-    ) String getImageProduct() {
+    public String getImageProduct() {
         return imageProduct;
     }
 
-    public void setImageProduct(@Pattern(
-            regexp = ".*\\.(png|jpg|jpeg)$",
-            message = "Image URL must be valid (.jpg, .png, .jpeg)"
-    ) String imageProduct) {
+    public void setImageProduct(String imageProduct) {
         this.imageProduct = imageProduct;
     }
 
